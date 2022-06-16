@@ -6,5 +6,7 @@ public class Bishop : BasePiece
     {
         level = 5;
         evolveLevel = 7;
+
+        movement = new Vector3Int(0, 0, 7);
     }
 }

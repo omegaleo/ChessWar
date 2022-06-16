@@ -6,6 +6,7 @@ public class Rook : BasePiece
     {
         level = 4;
         evolveLevel = 6;
+
+        movement = new(7, 7, 0);
     }
-    
 }

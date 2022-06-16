@@ -68,8 +68,8 @@ public class PieceManager : MonoBehaviour
 
     public void Setup(Board board)
     {
-        whitePieces = CreatePieces(Color.white, board);
-        blackPieces = CreatePieces(Color.black, board);
+        whitePieces = CreatePieces(Color.white);
+        blackPieces = CreatePieces(Color.black);
         
         PlacePieces(1, 0, whitePieces, board);
         PlacePieces(6, 7, blackPieces, board);
@@ -77,7 +77,7 @@ public class PieceManager : MonoBehaviour
         SwitchSides(Color.black);
     }
 
-    private List<BasePiece> CreatePieces(Color teamColor, Board board)
+    private List<BasePiece> CreatePieces(Color teamColor)
     {
         List<BasePiece> newPieces = new List<BasePiece>();
 
@@ -145,6 +145,18 @@ public class PieceManager : MonoBehaviour
         foreach (BasePiece piece in blackPieces)
         {
             piece.Reset();
+        }
+    }
+
+    public void EvolvePieces(Color teamColor)
+    {
+        if (teamColor == Color.black)
+        {
+            blackPieces.ForEach(x => x.Evolve());
+        }
+        else
+        {
+            whitePieces.ForEach(x => x.Evolve());
         }
     }
 }

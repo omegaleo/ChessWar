@@ -97,11 +97,16 @@ public class BasePiece : EventTrigger
     {
         if (level >= evolveLevel && !evolved)
         {
-            GetComponent<Image>().sprite = (color == Color.black) ? eBlackSprite : eWhiteSprite;
-            evolved = true;
+            Evolve();
         }
     }
-    
+
+    public virtual void Evolve()
+    {
+        GetComponent<Image>().sprite = (color == Color.black) ? eBlackSprite : eWhiteSprite;
+        evolved = true;
+    }
+
     protected virtual void CheckPathing()
     {
         highlightedCells.Clear();
@@ -227,7 +232,7 @@ public class BasePiece : EventTrigger
 
     #endregion
 
-    public void Reset()
+    public virtual void Reset()
     {
         Kill();
         Place(OriginalCell);

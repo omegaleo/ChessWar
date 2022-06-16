@@ -6,5 +6,7 @@ public class Queen : BasePiece
     {
         level = 8;
         evolveLevel = 10;
+
+        movement = new Vector3Int(7, 7, 7);
     }
 }

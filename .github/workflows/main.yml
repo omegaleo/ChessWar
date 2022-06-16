@@ -19,8 +19,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ARTIFACT_TOKEN }}
         with:
-          tag_name: ${{github.ref_name#releases/}}
-          release_name: Release ${{github.ref_name#releases/}}
+          tag_name: ${{github.ref_name}}
+          release_name: Release ${{github.ref_name}}
       - name: Set Release URL
         run: echo "${{ steps.create-release.outputs.upload_url }}" >> $RELEASE_URL
   upload-release:

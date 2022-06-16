@@ -22,7 +22,7 @@ jobs:
           tag_name: ${{github.ref_name}}
           release_name: Release ${{github.ref_name}}
       - name: Set Release URL
-        run: echo "${{ steps.create-release.outputs.upload_url }}" >> $RELEASE_URL
+        run: echo "RELEASE_URL=${{ steps.create-release.outputs.upload_url }}" >> $GITHUB_ENV
   upload-release:
     name: Upload build files to the release
     runs-on: ubuntu-latest

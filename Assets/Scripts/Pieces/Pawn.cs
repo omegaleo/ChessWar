@@ -45,7 +45,7 @@ public class Pawn : BasePiece
         return false;
     }
 
-    protected override void CheckPathing()
+    public override void CheckPathing()
     {
         highlightedCells.Clear();
         if (evolved)

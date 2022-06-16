@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class PieceManager : MonoBehaviour
 {
@@ -11,9 +12,10 @@ public class PieceManager : MonoBehaviour
     public bool isKingAlive = true;
     
     [SerializeField] private GameObject piecePrefab;
-    [SerializeField] private List<BasePiece> whitePieces = new List<BasePiece>();
-    [SerializeField] private List<BasePiece> blackPieces = new List<BasePiece>();
+    public List<BasePiece> whitePieces = new List<BasePiece>();
+    public List<BasePiece> blackPieces = new List<BasePiece>();
     [SerializeField] private List<BasePiece> promotedPieces = new List<BasePiece>();
+    [SerializeField] private List<BasePiece> kings = new List<BasePiece>();
 
     private string[] pieceOrder = new string[16]
     {
@@ -28,8 +30,8 @@ public class PieceManager : MonoBehaviour
         "R",
         "KN",
         "B",
-        "K",
         "Q",
+        "K",
         "B",
         "KN",
         "R"
@@ -85,7 +87,13 @@ public class PieceManager : MonoBehaviour
         for (int i = 0; i < pieceOrder.Length; i++)
         {
             string key = pieceOrder[i];
-            newPieces.Add(CreatePiece(teamColor, key));
+            var piece = CreatePiece(teamColor, key);
+            newPieces.Add(piece);
+
+            if (piece.GetType() == typeof(King))
+            {
+                kings.Add(piece);
+            }
         }
 
         return newPieces;
@@ -108,6 +116,11 @@ public class PieceManager : MonoBehaviour
         return newPiece;
     }
 
+    public King GetKing(Color teamColor)
+    {
+        return (King)kings.FirstOrDefault(x => x.color == teamColor);
+    }
+    
     private void PlacePieces(int pawnRow, int royaltyRow, List<BasePiece> pieces, Board board)
     {
         for (int i = 0; i < 8; i++)
@@ -127,13 +140,16 @@ public class PieceManager : MonoBehaviour
 
     public void SwitchSides(Color color)
     {
-        if (!isKingAlive)
+        King blackKing = GetKing(Color.black);
+        King whiteKing = GetKing(Color.white);
+
+        if (blackKing.IsCheckMate())
         {
-            ResetPieces();
-
-            isKingAlive = true;
-
-            color = Color.black;
+            Debug.Log("White wins!");
+        }
+        else if (whiteKing.IsCheckMate())
+        {
+            Debug.Log("Black wins!");
         }
 
         bool isBlackTurn = color == Color.white;
@@ -192,5 +208,67 @@ public class PieceManager : MonoBehaviour
         promotedPiece.Place(cell);
         
         promotedPieces.Add(promotedPiece);
+    }
+
+    public void UpdateIsChecked(Color teamColor)
+    {
+        if (teamColor == Color.black)
+        {
+            whitePieces.ForEach(x => x.CheckPathing());
+        }
+        else
+        {
+            blackPieces.ForEach(x => x.CheckPathing());
+        }
+    }
+
+    private List<Cell> IterateCells(int xPos, int yPos, int xIncrement, int yIncrement, int count)
+    {
+        List<Cell> cells = new List<Cell>();
+
+        int curX = xPos;
+        int curY = yPos;
+        
+        for (int i = 0; i < Math.Abs(count); i++)
+        {
+            curX += xIncrement;
+            curY += yIncrement;
+            
+            var cell = GameManager.instance.board.allCells[curX, curY];
+            cells.Add(cell);
+        }
+        
+        return cells;
+    }
+    
+    private List<Cell> CheckingCellPath(Cell checkingPieceCell, King king)
+    {
+        Cell kingCell = king.CurrentCell;
+
+        var xPos = checkingPieceCell.boardPosition.x;
+        var yPos = checkingPieceCell.boardPosition.y;
+        
+        int xDiff = kingCell.boardPosition.x - xPos;
+        int yDiff = kingCell.boardPosition.y - yPos;
+
+        return IterateCells(xPos, yPos,
+            (xDiff > 0) ? 1 : ((xDiff < 0) ? -1 : 0),
+            (yDiff > 0) ? 1 : ((yDiff < 0) ? -1 : 0),
+            (xDiff != 0) ? xDiff : yDiff);
+    }
+    
+    public bool CanCheckmateBePrevented(Color teamColor)
+    {
+        var checkingCells = (teamColor == Color.black)
+            ? whitePieces.Where(x => x.isChecking).SelectMany(x => CheckingCellPath(x.CurrentCell, GetKing(Color.black)))
+            : blackPieces.Where(x => x.isChecking).SelectMany(x => CheckingCellPath(x.CurrentCell, GetKing(Color.white)));
+
+        var movements = (teamColor == Color.black)
+            ? blackPieces.SelectMany(x => x.highlightedCells)
+            : whitePieces.SelectMany(x => x.highlightedCells);
+
+        var countInterceptions = movements.Count(x => checkingCells.Contains(x));
+
+        return countInterceptions > 0;
     }
 }

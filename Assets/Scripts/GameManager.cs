@@ -7,6 +7,21 @@ public class GameManager : MonoBehaviour
 {
     public Board board;
 
+    public static GameManager instance;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
     private void Start()
     {
         board.Create();

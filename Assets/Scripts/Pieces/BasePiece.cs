@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -10,7 +11,7 @@ public class BasePiece : EventTrigger
     public Color color = Color.clear;
 
     protected Cell OriginalCell = null;
-    protected Cell CurrentCell = null;
+    public Cell CurrentCell = null;
 
     protected RectTransform RectTransform;
 
@@ -20,7 +21,7 @@ public class BasePiece : EventTrigger
     public Sprite eBlackSprite;
 
     protected Vector3Int movement = Vector3Int.one;
-    protected List<Cell> highlightedCells = new List<Cell>();
+    public List<Cell> highlightedCells = new List<Cell>();
 
     protected Cell targetCell;
 
@@ -28,6 +29,7 @@ public class BasePiece : EventTrigger
     public int evolveLevel = 3;
     public bool evolved = false;
     public bool bypassMovement = false; // For rook evolved form
+    public bool isChecking = false;
     
     public virtual void Setup(Color newColor, PieceSprite sprites)
     {
@@ -42,7 +44,7 @@ public class BasePiece : EventTrigger
         RectTransform = GetComponent<RectTransform>();
     }
 
-    public void Place(Cell newCell)
+    public virtual void Place(Cell newCell)
     {
         // Cell stuff
         CurrentCell = newCell;
@@ -56,8 +58,10 @@ public class BasePiece : EventTrigger
 
     #region Movement
 
-    private void CreateCellPath(int xDir, int yDir, int movement)
+    public IEnumerable<Cell> GetCellPath(int xDir, int yDir, int movement)
     {
+        List<Cell> cells = new List<Cell>();
+        
         int currentX = CurrentCell.boardPosition.x;
         int currentY = CurrentCell.boardPosition.y;
 
@@ -77,26 +81,45 @@ public class BasePiece : EventTrigger
                 {
                     if (IsValidMovement(possibleTarget.currentPiece))
                     {
-                        highlightedCells.Add(possibleTarget);
+                        cells.Add(possibleTarget);
 
-                        if (state != CellState.Friendly || !bypassMovement) // Check if upgrade rook and piece blocking is a friendly piece
+                        if (state != CellState.Friendly || !bypassMovement) // Check if upgraded rook and piece blocking is a friendly piece
                         {
                             break; //Stop movement here
                         }
                     }
                     else
                     {
+                        var piece = possibleTarget.currentPiece;
+                        if (ValidChecking(piece))
+                        {
+                            isChecking = true;
+                            CurrentCell.outlineImage.enabled = true;
+                        }
+                        
                         break;
                     }
                 }
 
-                highlightedCells.Add(possibleTarget);
+                cells.Add(possibleTarget);
             }
             else
             {
                 break;
             }
         }
+
+        return cells;
+    }
+
+    private bool ValidChecking(BasePiece piece)
+    {
+        return piece.GetType() == typeof(King) && piece.color != color && this.GetType() != typeof(King) && this.GetType() != typeof(Pawn);
+    }
+
+    public void CreateCellPath(int xDir, int yDir, int movement)
+    {
+        highlightedCells.AddRange(GetCellPath(xDir, yDir, movement).ToList());
     }
 
     protected virtual void CheckEvolved()
@@ -113,8 +136,10 @@ public class BasePiece : EventTrigger
         evolved = true;
     }
 
-    protected virtual void CheckPathing()
+    public virtual void CheckPathing()
     {
+        isChecking = false;
+        CurrentCell.outlineImage.enabled = false;
         highlightedCells.Clear();
         
         // Horizontal
@@ -160,6 +185,11 @@ public class BasePiece : EventTrigger
         CurrentCell.currentPiece = this;
 
         transform.position = CurrentCell.transform.position;
+        
+        // Check if any of the kings is in check
+        PieceManager.instance.UpdateIsChecked(Color.white);
+        PieceManager.instance.UpdateIsChecked(Color.black);
+        
         targetCell = null;
     }
 
@@ -242,6 +272,8 @@ public class BasePiece : EventTrigger
     {
         Kill();
         Place(OriginalCell);
+        isChecking = false;
+        CurrentCell.outlineImage.enabled = false;
     }
 
     public virtual void Kill()

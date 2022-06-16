@@ -359,9 +359,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4499761bd251a354e8642aae301951f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isKingAlive: 1
   piecePrefab: {fileID: 3437803970911800431, guid: d46bda7e193357545b7a1b1d69eb28f9, type: 3}
   whitePieces: []
   blackPieces: []
+  promotedPieces: []
+  kings: []
   sprites:
   - pieceIdentifier: P
     whiteSprite: {fileID: -929841066, guid: 7e5d6b4687739cd42b49d3ca6964aa21, type: 3}

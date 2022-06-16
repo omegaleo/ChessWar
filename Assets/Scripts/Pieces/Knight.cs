@@ -33,7 +33,7 @@ public class Knight : BasePiece
         }
     }
 
-    protected override void CheckPathing()
+    public override void CheckPathing()
     {
         highlightedCells.Clear();
         CreateCellPath(1);

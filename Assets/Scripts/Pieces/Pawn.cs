@@ -2,7 +2,7 @@
 
 public class Pawn : BasePiece
 {
-    private int baseLevel = 1; // To be used for promotion level calculation
+    public int baseLevel = 1; // To be used for promotion level calculation
 
     private bool isFirstMove = true;
     
@@ -28,6 +28,8 @@ public class Pawn : BasePiece
         base.Move();
 
         isFirstMove = false;
+        
+        CheckForPromotion();
     }
 
     private bool MatchesState(int targetX, int targetY, CellState targetState)
@@ -45,6 +47,7 @@ public class Pawn : BasePiece
 
     protected override void CheckPathing()
     {
+        highlightedCells.Clear();
         if (evolved)
         {
             base.CheckPathing();
@@ -80,5 +83,18 @@ public class Pawn : BasePiece
     {
         base.Reset();
         isFirstMove = true;
+    }
+
+    private void CheckForPromotion()
+    {
+        int currentX = CurrentCell.boardPosition.x;
+        int currentY = CurrentCell.boardPosition.y;
+
+        CellState state = CurrentCell.board.ValidateCell(currentX, currentY + movement.y, this);
+
+        if (state == CellState.OutOfBounds)
+        {
+            PieceManager.instance.PromotePiece(this, CurrentCell, color);
+        }
     }
 }

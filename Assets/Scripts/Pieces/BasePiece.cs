@@ -27,6 +27,7 @@ public class BasePiece : EventTrigger
     public int level;
     public int evolveLevel = 3;
     public bool evolved = false;
+    public bool bypassMovement = false; // For rook evolved form
     
     public virtual void Setup(Color newColor, PieceSprite sprites)
     {
@@ -77,6 +78,11 @@ public class BasePiece : EventTrigger
                     if (IsValidMovement(possibleTarget.currentPiece))
                     {
                         highlightedCells.Add(possibleTarget);
+
+                        if (state != CellState.Friendly || !bypassMovement) // Check if upgrade rook and piece blocking is a friendly piece
+                        {
+                            break; //Stop movement here
+                        }
                     }
                     else
                     {
@@ -120,12 +126,12 @@ public class BasePiece : EventTrigger
         CreateCellPath(0, -1, movement.y);
         
         // Upper Diagonal
-        CreateCellPath(1, 1, movement.x);
-        CreateCellPath(-1, 1, movement.x);
+        CreateCellPath(1, 1, movement.z);
+        CreateCellPath(-1, 1, movement.z);
         
         // Lower Diagonal
-        CreateCellPath(1, -1, movement.x);
-        CreateCellPath(-1, -1, movement.x);
+        CreateCellPath(1, -1, movement.z);
+        CreateCellPath(-1, -1, movement.z);
     }
 
     protected void ShowCells()
@@ -225,7 +231,7 @@ public class BasePiece : EventTrigger
         PieceManager.instance.SwitchSides(color);
     }
 
-    private bool IsValidMovement(BasePiece piece)
+    public bool IsValidMovement(BasePiece piece)
     {
         return piece.level <= this.level && this.GetType() != typeof(King) && piece.GetType() != typeof(King);
     }

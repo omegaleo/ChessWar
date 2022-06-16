@@ -9,4 +9,11 @@ public class Rook : BasePiece
 
         movement = new(7, 7, 0);
     }
+
+    public override void Evolve()
+    {
+        base.Evolve();
+
+        bypassMovement = true;
+    }
 }

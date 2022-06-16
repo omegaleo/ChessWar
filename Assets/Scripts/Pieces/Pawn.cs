@@ -2,16 +2,9 @@
 
 public class Pawn : BasePiece
 {
+    private int baseLevel = 1; // To be used for promotion level calculation
     public Pawn()
     {
         level = 1;
-    }
-    
-    protected override void CheckEvolved()
-    {
-        if (Mathf.CeilToInt(level) == 3)
-        {
-            base.CheckEvolved();
-        }
     }
 }

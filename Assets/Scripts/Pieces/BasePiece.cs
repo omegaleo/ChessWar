@@ -24,7 +24,9 @@ public class BasePiece : EventTrigger
 
     protected Cell targetCell;
 
-    public float level;
+    public int level;
+    public int evolveLevel = 3;
+    public bool evolved = false;
     
     public virtual void Setup(Color newColor, PieceSprite sprites)
     {
@@ -68,7 +70,21 @@ public class BasePiece : EventTrigger
 
             if (state == CellState.Enemy || state == CellState.Free || state == CellState.Friendly)
             {
-                highlightedCells.Add(CurrentCell.board.allCells[currentX, currentY]);
+                var possibleTarget = CurrentCell.board.allCells[currentX, currentY];
+
+                if (possibleTarget.currentPiece != null)
+                {
+                    if (IsValidMovement(possibleTarget.currentPiece))
+                    {
+                        highlightedCells.Add(possibleTarget);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                highlightedCells.Add(possibleTarget);
             }
             else
             {
@@ -79,7 +95,11 @@ public class BasePiece : EventTrigger
 
     protected virtual void CheckEvolved()
     {
-        GetComponent<Image>().sprite = (color == Color.black) ? eBlackSprite : eWhiteSprite;
+        if (level >= evolveLevel && !evolved)
+        {
+            GetComponent<Image>().sprite = (color == Color.black) ? eBlackSprite : eWhiteSprite;
+            evolved = true;
+        }
     }
     
     protected virtual void CheckPathing()
@@ -180,18 +200,29 @@ public class BasePiece : EventTrigger
 
         if (state == CellState.Friendly)
         {
+            // Sacrifice a piece
             var piece = targetCell.currentPiece;
         
-            if (piece.level <= this.level)
+            if (IsValidMovement(piece))
             {
-                this.level += (piece.level / this.level);
+                this.level += piece.level;
                 CheckEvolved();
+            }
+            else
+            {
+                transform.position = CurrentCell.gameObject.transform.position;
+                return;
             }
         }
         
         Move();
         
         PieceManager.instance.SwitchSides(color);
+    }
+
+    private bool IsValidMovement(BasePiece piece)
+    {
+        return piece.level <= this.level && this.GetType() != typeof(King) && piece.GetType() != typeof(King);
     }
 
     #endregion

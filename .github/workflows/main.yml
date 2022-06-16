@@ -22,7 +22,7 @@ jobs:
           tag_name: ${GITHUB_REF#refs/heads/releases/}
           release_name: Release ${GITHUB_REF#refs/heads/releases/}
       - name: Set Release URL
-        run: echo "::set-env name=RELEASE_URL::${{ steps.create-release.outputs.upload_url }}"
+        run: echo "${{ steps.create-release.outputs.upload_url }}" >> $RELEASE_URL
   upload-release:
     name: Upload build files to the release
     runs-on: ubuntu-latest

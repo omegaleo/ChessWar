@@ -1,9 +1,6 @@
 name: Build
 
 on:
-  create:
-    branches:
-      - 'releases/**'
   push:
     branches:
       - 'releases/**'

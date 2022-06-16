@@ -41,13 +41,13 @@ jobs:
       - name: Run tests
         uses: game-ci/unity-test-runner@v2
         with:
-          projectPath: ./
+          projectPath: ${{ matrix.projectPath }}
 
       # Build
       - name: Build project
         uses: game-ci/unity-builder@v2
         with:
-          projectPath: ./
+          projectPath: ${{ matrix.projectPath }}
           targetPlatform: WebGL
 
       # Output
@@ -129,7 +129,7 @@ jobs:
       - uses: game-ci/unity-test-runner@v2
         id: testRunner
         with:
-          projectPath: ./
+          projectPath: ${{ matrix.projectPath }}
           testMode: editmode
 
       # Upload artifact
@@ -174,7 +174,7 @@ jobs:
       - uses: game-ci/unity-test-runner@v2
         id: testRunner
         with:
-          projectPath: ./
+          projectPath: ${{ matrix.projectPath }}
           testMode: playmode
 
       # Upload artifact
@@ -226,7 +226,7 @@ jobs:
       - uses: game-ci/unity-test-runner@v2.0-alpha-5
         id: testRunner
         with:
-          projectPath: ./
+          projectPath: ${{ matrix.projectPath }}
           testMode: ${{ matrix.testMode }}
           checkName: ${{ matrix.testMode }} test results
           githubToken: ${{ secrets.GITHUB_TOKEN }}

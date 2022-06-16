@@ -20,7 +20,7 @@ public class Pawn : BasePiece
     public override void Evolve()
     {
         base.Evolve();
-        movement = new Vector3Int(0, 1, 1);
+        movement = new Vector3Int(1, 1, 1);
     }
 
     protected override void Move()

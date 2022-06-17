@@ -27,9 +27,9 @@ public class Knight : BasePiece
 
         if (evolved)
         {
-            // Horizontal Movement by 1
-            MatchesState(currentX - 1, currentY);
-            MatchesState(currentX + 1, currentY);
+            // Vertical Movement by 1
+            MatchesState(currentX, currentY - 1);
+            MatchesState(currentX, currentY + 1);
         }
     }
 

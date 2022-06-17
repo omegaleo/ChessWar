@@ -9,4 +9,11 @@ public class Bishop : BasePiece
 
         movement = new Vector3Int(0, 0, 7);
     }
+
+    public override void Evolve()
+    {
+        base.Evolve();
+
+        movement = new Vector3Int(1, 0, 7);
+    }
 }

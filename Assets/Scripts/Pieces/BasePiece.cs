@@ -142,6 +142,11 @@ public class BasePiece : EventTrigger
         CurrentCell.outlineImage.enabled = false;
         highlightedCells.Clear();
         
+        if (!IsAlive())
+        {
+            return;
+        }
+        
         // Horizontal
         CreateCellPath(1, 0, movement.x);
         CreateCellPath(-1, 0, movement.x);

@@ -18,6 +18,9 @@ public class Board : MonoBehaviour
     [SerializeField] private GameObject cellPrefab;
     public Cell[,] allCells = new Cell[8, 8];
 
+    [SerializeField] private float size = 50f;
+    [SerializeField] private float off = 25f;
+
     public static Board instance;
 
     private void Awake()
@@ -45,7 +48,7 @@ public class Board : MonoBehaviour
                 
                 // Position
                 var rectTransform = newCell.GetComponent<RectTransform>();
-                rectTransform.anchoredPosition = new Vector2((x * 100) + 50, (y * 100) + 50);
+                rectTransform.anchoredPosition = new Vector2((x * size) + off, (y * size) + off);
                 
                 // Setup
                 allCells[x, y] = newCell.GetComponent<Cell>();

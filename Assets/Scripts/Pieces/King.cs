@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -30,24 +31,26 @@ public class King : BasePiece
     {
         base.CheckPathing();
 
-        rightRook = GetRook(1, 3);
-        leftRook = GetRook(-1, 4);
+        try
+        {
+            rightRook = GetRook(1, 3);
+            leftRook = GetRook(-1, 4);
+        }
+        catch
+        {
+        }
 
         if (IsChecked())
         {
-            var checkingCells = (color == Color.black)
-                ? PieceManager.instance.whitePieces.Where(x => x.isChecking).Select(x => x.highlightedCells)
-                : PieceManager.instance.blackPieces.Where(x => x.isChecking).Select(x => x.highlightedCells);
+            var checkingCells = PieceManager.instance.GetCheckingCells(color).ToList();
 
-            highlightedCells = highlightedCells.Where(x => !checkingCells.Any(y => y.Contains(x))).ToList();
+            highlightedCells = highlightedCells.Where(x => !checkingCells.Contains(x)).ToList();
         }
     }
 
     public bool IsChecked()
     {
-        bool isChecked = (color == Color.black)
-            ? PieceManager.instance.whitePieces.Any(x => x.isChecking)
-            : PieceManager.instance.blackPieces.Any(x => x.isChecking);
+        bool isChecked = PieceManager.instance.GetCheckingCells(color).Any();
 
         CurrentCell.checkedImage.enabled = isChecked;
         

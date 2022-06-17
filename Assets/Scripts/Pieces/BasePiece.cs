@@ -30,6 +30,8 @@ public class BasePiece : EventTrigger
     public bool evolved = false;
     public bool bypassMovement = false; // For rook evolved form
     public bool isChecking = false;
+    public bool moveTwice = false;
+    public int move = 0;
     
     public virtual void Setup(Color newColor, PieceSprite sprites)
     {
@@ -112,7 +114,7 @@ public class BasePiece : EventTrigger
         return cells;
     }
 
-    private bool ValidChecking(BasePiece piece)
+    public bool ValidChecking(BasePiece piece)
     {
         return piece.GetType() == typeof(King) && piece.color != color && this.GetType() != typeof(King) && this.GetType() != typeof(Pawn);
     }
@@ -162,6 +164,12 @@ public class BasePiece : EventTrigger
         // Lower Diagonal
         CreateCellPath(1, -1, movement.z);
         CreateCellPath(-1, -1, movement.z);
+
+        if (PieceManager.instance.GetKing(color).IsChecked() && this.GetType() != typeof(King))
+        {
+            var checkingCells = PieceManager.instance.GetCheckingCells(color);
+            highlightedCells = highlightedCells.Where(x => checkingCells.Contains(x)).ToList();
+        }
     }
 
     protected void ShowCells()
@@ -283,8 +291,13 @@ public class BasePiece : EventTrigger
         }
         
         Move();
+        move++;
         
-        PieceManager.instance.SwitchSides(color);
+        if (!moveTwice || move > 1)
+        {
+            move = 0;
+            PieceManager.instance.SwitchSides(color);
+        }
     }
 
     public bool IsValidMovement(BasePiece piece)

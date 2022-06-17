@@ -9,4 +9,10 @@ public class Queen : BasePiece
 
         movement = new Vector3Int(7, 7, 7);
     }
+    
+    public override void Evolve()
+    {
+        base.Evolve();
+        moveTwice = true;
+    }
 }

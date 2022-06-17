@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 public class Pawn : BasePiece
 {
@@ -75,6 +76,12 @@ public class Pawn : BasePiece
                 {
                     MatchesState(currentX, currentY + (movement.y * 2), CellState.Free);
                 }
+            }
+            
+            if (PieceManager.instance.GetKing(color).IsChecked() && this.GetType() != typeof(King))
+            {
+                var checkingCells = PieceManager.instance.GetCheckingCells(color);
+                highlightedCells = highlightedCells.Where(x => checkingCells.Contains(x)).ToList();
             }
         }
     }

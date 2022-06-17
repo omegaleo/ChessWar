@@ -278,7 +278,7 @@ public class PieceManager : MonoBehaviour
         return cells;
     }
     
-    private List<Cell> CheckingCellPath(Cell checkingPieceCell, King king)
+    public List<Cell> CheckingCellPath(Cell checkingPieceCell, King king)
     {
         Cell kingCell = king.CurrentCell;
 
@@ -293,12 +293,17 @@ public class PieceManager : MonoBehaviour
             (yDiff > 0) ? 1 : ((yDiff < 0) ? -1 : 0),
             (xDiff != 0) ? xDiff : yDiff);
     }
+
+    public IEnumerable<Cell> GetCheckingCells(Color color)
+    {
+        return (color == Color.black)
+            ? whitePieces.Where(x => x.isChecking && x.IsAlive()).SelectMany(x => CheckingCellPath(x.CurrentCell, GetKing(Color.black)))
+            : blackPieces.Where(x => x.isChecking && x.IsAlive()).SelectMany(x => CheckingCellPath(x.CurrentCell, GetKing(Color.white)));
+    }
     
     public bool CanCheckmateBePrevented(Color teamColor)
     {
-        var checkingCells = (teamColor == Color.black)
-            ? whitePieces.Where(x => x.isChecking && x.IsAlive()).SelectMany(x => CheckingCellPath(x.CurrentCell, GetKing(Color.black)))
-            : blackPieces.Where(x => x.isChecking && x.IsAlive()).SelectMany(x => CheckingCellPath(x.CurrentCell, GetKing(Color.white)));
+        var checkingCells = GetCheckingCells(teamColor);
 
         var movements = (teamColor == Color.black)
             ? blackPieces.Where(x => x.IsAlive()).SelectMany(x => x.highlightedCells)

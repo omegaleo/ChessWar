@@ -19,9 +19,9 @@ public class King : BasePiece
         return;
     }
 
-    public override void Kill()
+    public override void Kill(bool promotion = false)
     {
-        base.Kill();
+        base.Kill(promotion);
 
         PieceManager.instance.isKingAlive = false;
     }

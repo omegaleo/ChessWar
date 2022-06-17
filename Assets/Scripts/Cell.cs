@@ -7,6 +7,7 @@ public class Cell : MonoBehaviour
 {
     public Image outlineImage;
     public Image checkedImage;
+    public Image bloodSplatterImage;
     public Vector2Int boardPosition = Vector2Int.zero;
     public Board board;
     public RectTransform rectTransform;

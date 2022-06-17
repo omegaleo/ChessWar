@@ -197,6 +197,26 @@ public class BasePiece : EventTrigger
 
     #region Events
 
+    public override void OnPointerEnter(PointerEventData eventData)
+    {
+        base.OnPointerEnter(eventData);
+
+        if (!PieceManager.instance.isDraggingPiece)
+        {
+            CheckPathing();
+        
+            ShowCells();
+        }
+    }
+
+    public override void OnPointerExit(PointerEventData eventData)
+    {
+        base.OnPointerExit(eventData);
+        
+        if (!PieceManager.instance.isDraggingPiece)
+            ClearCells();
+    }
+
     public override void OnBeginDrag(PointerEventData eventData)
     {
         base.OnBeginDrag(eventData);
@@ -204,6 +224,7 @@ public class BasePiece : EventTrigger
         CheckPathing();
         
         ShowCells();
+        PieceManager.instance.isDraggingPiece = true;
     }
     
     public override void OnDrag(PointerEventData eventData)
@@ -227,7 +248,7 @@ public class BasePiece : EventTrigger
     public override void OnEndDrag(PointerEventData eventData)
     {
         base.OnEndDrag(eventData);
-        
+        PieceManager.instance.isDraggingPiece = false;
         ClearCells();
 
         if (!targetCell)
@@ -276,9 +297,10 @@ public class BasePiece : EventTrigger
         CurrentCell.outlineImage.enabled = false;
     }
 
-    public virtual void Kill()
+    public virtual void Kill(bool promotion = false)
     {
         CurrentCell.currentPiece = null;
+        CurrentCell.bloodSplatterImage.enabled = !promotion;
         gameObject.SetActive(false);
     }
 }

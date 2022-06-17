@@ -17,6 +17,8 @@ public class PieceManager : MonoBehaviour
     [SerializeField] private List<BasePiece> promotedPieces = new List<BasePiece>();
     [SerializeField] private List<BasePiece> kings = new List<BasePiece>();
 
+    public bool isDraggingPiece = false;
+    
     private string[] pieceOrder = new string[16]
     {
         "P",
@@ -201,7 +203,7 @@ public class PieceManager : MonoBehaviour
     {
         int levelsToAdd = pawn.level - pawn.baseLevel;
 
-        pawn.Kill();
+        pawn.Kill(true);
 
         BasePiece promotedPiece = CreatePiece(teamColor, "Q");
         

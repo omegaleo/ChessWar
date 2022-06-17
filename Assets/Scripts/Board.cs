@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,7 +18,21 @@ public class Board : MonoBehaviour
     [SerializeField] private GameObject cellPrefab;
     public Cell[,] allCells = new Cell[8, 8];
 
-    public void Create()
+    public static Board instance;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
+    private void Start()
     {
         // Create all cells
         for (int y = 0; y < 8; y++)

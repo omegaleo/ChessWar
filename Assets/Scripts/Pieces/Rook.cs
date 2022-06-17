@@ -29,7 +29,7 @@ public class Rook : BasePiece
         firstMove = true;
     }
 
-    protected override void Move()
+    public override void Move()
     {
         base.Move();
         firstMove = false;
@@ -58,6 +58,6 @@ public class Rook : BasePiece
         var newPosition = CurrentCell.boardPosition;
         newPosition.x += offset;
 
-        return CurrentCell.board.allCells[newPosition.x, newPosition.y];
+        return Board.instance.allCells[newPosition.x, newPosition.y];
     }
 }

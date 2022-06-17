@@ -5,7 +5,7 @@ namespace Editor
 {
     public class Cheats
     {
-        [MenuItem("Cheats/Evolve Black")]
+        [MenuItem("Game Menu/Cheats/Evolve Black")]
         public static void EvolveBlack()
         {
             if (PieceManager.instance != null)
@@ -14,7 +14,7 @@ namespace Editor
             }
         }
 
-        [MenuItem("Cheats/Evolve White")]
+        [MenuItem("Game Menu/Cheats/Evolve White")]
         public static void EvolveWhite()
         {
             if (PieceManager.instance != null)

@@ -71,13 +71,13 @@ public class PieceManager : MonoBehaviour
         }
     }
 
-    public void Setup(Board board)
+    public void Setup()
     {
         whitePieces = CreatePieces(Color.white);
         blackPieces = CreatePieces(Color.black);
         
-        PlacePieces(1, 0, whitePieces, board);
-        PlacePieces(6, 7, blackPieces, board);
+        PlacePieces(1, 0, whitePieces);
+        PlacePieces(6, 7, blackPieces);
 
         SwitchSides(Color.black);
     }
@@ -123,12 +123,12 @@ public class PieceManager : MonoBehaviour
         return (King)kings.FirstOrDefault(x => x.color == teamColor);
     }
     
-    private void PlacePieces(int pawnRow, int royaltyRow, List<BasePiece> pieces, Board board)
+    private void PlacePieces(int pawnRow, int royaltyRow, List<BasePiece> pieces)
     {
         for (int i = 0; i < 8; i++)
         {
-            pieces[i].Place(board.allCells[i, pawnRow]);
-            pieces[i + 8].Place(board.allCells[i, royaltyRow]);
+            pieces[i].Place(Board.instance.allCells[i, pawnRow]);
+            pieces[i + 8].Place(Board.instance.allCells[i, royaltyRow]);
         }
     }
 
@@ -166,8 +166,30 @@ public class PieceManager : MonoBehaviour
 
             piece.enabled = isPartOfTeam;
         }
+
+        if (isBlackTurn && GameManager.instance.botGame)
+        {
+            BotMove();
+        }
     }
 
+    void BotMove()
+    {
+        // For now, get a random piece that can move and move it to a random position
+        var pieces = blackPieces.Where(x => x.IsAlive()).ToList();
+
+        pieces.ForEach(x => x.CheckPathing());
+        var piece = pieces.Where(x => x.highlightedCells.Any()).ToList().Random();
+
+        if (piece != null)
+        {
+            piece.targetCell = piece.highlightedCells.Random();
+            piece.Move();
+        }
+
+        SwitchSides(Color.black);
+    }
+    
     public void ResetPieces()
     {
         foreach (BasePiece piece in promotedPieces)
@@ -208,6 +230,15 @@ public class PieceManager : MonoBehaviour
         BasePiece promotedPiece = CreatePiece(teamColor, "Q");
         
         promotedPiece.Place(cell);
+
+        if (teamColor == Color.black)
+        {
+            blackPieces.Add(promotedPiece);
+        }
+        else
+        {
+            whitePieces.Add(promotedPiece);
+        }
         
         promotedPieces.Add(promotedPiece);
     }
@@ -231,12 +262,16 @@ public class PieceManager : MonoBehaviour
         int curX = xPos;
         int curY = yPos;
         
+        // Also add the possibility of taking the checking piece
+        var currentCell = Board.instance.allCells[curX, curY];
+        cells.Add(currentCell);
+        
         for (int i = 0; i < Math.Abs(count); i++)
         {
             curX += xIncrement;
             curY += yIncrement;
             
-            var cell = GameManager.instance.board.allCells[curX, curY];
+            var cell = Board.instance.allCells[curX, curY];
             cells.Add(cell);
         }
         
@@ -262,12 +297,12 @@ public class PieceManager : MonoBehaviour
     public bool CanCheckmateBePrevented(Color teamColor)
     {
         var checkingCells = (teamColor == Color.black)
-            ? whitePieces.Where(x => x.isChecking).SelectMany(x => CheckingCellPath(x.CurrentCell, GetKing(Color.black)))
-            : blackPieces.Where(x => x.isChecking).SelectMany(x => CheckingCellPath(x.CurrentCell, GetKing(Color.white)));
+            ? whitePieces.Where(x => x.isChecking && x.IsAlive()).SelectMany(x => CheckingCellPath(x.CurrentCell, GetKing(Color.black)))
+            : blackPieces.Where(x => x.isChecking && x.IsAlive()).SelectMany(x => CheckingCellPath(x.CurrentCell, GetKing(Color.white)));
 
         var movements = (teamColor == Color.black)
-            ? blackPieces.SelectMany(x => x.highlightedCells)
-            : whitePieces.SelectMany(x => x.highlightedCells);
+            ? blackPieces.Where(x => x.IsAlive()).SelectMany(x => x.highlightedCells)
+            : whitePieces.Where(x => x.IsAlive()).SelectMany(x => x.highlightedCells);
 
         var countInterceptions = movements.Count(x => checkingCells.Contains(x));
 

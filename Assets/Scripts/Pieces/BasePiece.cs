@@ -23,7 +23,7 @@ public class BasePiece : EventTrigger
     protected Vector3Int movement = Vector3Int.one;
     public List<Cell> highlightedCells = new List<Cell>();
 
-    protected Cell targetCell;
+    public Cell targetCell;
 
     public int level;
     public int evolveLevel = 3;
@@ -71,11 +71,11 @@ public class BasePiece : EventTrigger
             currentY += yDir;
 
             CellState state = CellState.None;
-            state = CurrentCell.board.ValidateCell(currentX, currentY, this);
+            state = Board.instance.ValidateCell(currentX, currentY, this);
 
             if (state == CellState.Enemy || state == CellState.Free || state == CellState.Friendly)
             {
-                var possibleTarget = CurrentCell.board.allCells[currentX, currentY];
+                var possibleTarget = Board.instance.allCells[currentX, currentY];
 
                 if (possibleTarget.currentPiece != null)
                 {
@@ -175,7 +175,7 @@ public class BasePiece : EventTrigger
         }
     }
 
-    protected virtual void Move()
+    public virtual void Move()
     {
         targetCell.RemovePiece();
 
@@ -258,7 +258,7 @@ public class BasePiece : EventTrigger
         }
         
         CellState state = CellState.None;
-        state = CurrentCell.board.ValidateCell(targetCell.boardPosition.x, targetCell.boardPosition.y, this);
+        state = Board.instance.ValidateCell(targetCell.boardPosition.x, targetCell.boardPosition.y, this);
 
         if (state == CellState.Friendly)
         {
@@ -302,5 +302,10 @@ public class BasePiece : EventTrigger
         CurrentCell.currentPiece = null;
         CurrentCell.bloodSplatterImage.enabled = !promotion;
         gameObject.SetActive(false);
+    }
+
+    public bool IsAlive()
+    {
+        return gameObject.activeSelf;
     }
 }

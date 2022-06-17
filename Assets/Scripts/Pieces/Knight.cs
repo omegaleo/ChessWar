@@ -43,11 +43,11 @@ public class Knight : BasePiece
 
     private void MatchesState(int targetX, int targetY)
     {
-        CellState state = CurrentCell.board.ValidateCell(targetX, targetY, this);
+        CellState state = Board.instance.ValidateCell(targetX, targetY, this);
 
         if (state == CellState.Friendly)
         {
-            var possibleTargetCell = CurrentCell.board.allCells[targetX, targetY];
+            var possibleTargetCell = Board.instance.allCells[targetX, targetY];
 
             var piece = possibleTargetCell.currentPiece;
 
@@ -58,7 +58,7 @@ public class Knight : BasePiece
         }
         else if (state != CellState.OutOfBounds)
         {
-            highlightedCells.Add(CurrentCell.board.allCells [targetX, targetY]);
+            highlightedCells.Add(Board.instance.allCells [targetX, targetY]);
         }
     }
 }

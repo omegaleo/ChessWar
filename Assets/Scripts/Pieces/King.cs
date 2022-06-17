@@ -70,7 +70,7 @@ public class King : BasePiece
         rightRook = null;
     }
 
-    protected override void Move()
+    public override void Move()
     {
         CurrentCell.checkedImage.enabled = false;
         base.Move();
@@ -106,7 +106,7 @@ public class King : BasePiece
         {
             int offsetX = currentX + (i * direction);
 
-            var state = CurrentCell.board.ValidateCell(offsetX, currentY, this);
+            var state = Board.instance.ValidateCell(offsetX, currentY, this);
 
             if (state != CellState.Free)
             {
@@ -114,7 +114,7 @@ public class King : BasePiece
             }
         }
 
-        Cell rookCell = CurrentCell.board.allCells[currentX + (count * direction), currentY];
+        Cell rookCell = Board.instance.allCells[currentX + (count * direction), currentY];
         if (rookCell.currentPiece != null)
         {
             Rook rook = null;

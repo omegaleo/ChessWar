@@ -365,6 +365,7 @@ MonoBehaviour:
   blackPieces: []
   promotedPieces: []
   kings: []
+  isDraggingPiece: 0
   sprites:
   - pieceIdentifier: P
     whiteSprite: {fileID: -929841066, guid: 7e5d6b4687739cd42b49d3ca6964aa21, type: 3}

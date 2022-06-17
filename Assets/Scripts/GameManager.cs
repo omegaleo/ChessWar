@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public Board board;
-
     public static GameManager instance;
 
+    public bool botGame;
+    
     private void Awake()
     {
         if (instance == null)
@@ -22,9 +22,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    public void StartGame(bool botGame)
     {
-        board.Create();
-        PieceManager.instance.Setup(board);
+        this.botGame = botGame;
+        
+        PieceManager.instance.Setup();
     }
 }

@@ -23,7 +23,7 @@ public class Pawn : BasePiece
         movement = new Vector3Int(1, 1, 1);
     }
 
-    protected override void Move()
+    public override void Move()
     {
         base.Move();
 
@@ -34,11 +34,11 @@ public class Pawn : BasePiece
 
     private bool MatchesState(int targetX, int targetY, CellState targetState)
     {
-        CellState state = CurrentCell.board.ValidateCell(targetX, targetY, this);
+        CellState state = Board.instance.ValidateCell(targetX, targetY, this);
 
         if (state == targetState)
         {
-            highlightedCells.Add(CurrentCell.board.allCells[targetX, targetY]);
+            highlightedCells.Add(Board.instance.allCells[targetX, targetY]);
             return true;
         }
 
@@ -90,7 +90,7 @@ public class Pawn : BasePiece
         int currentX = CurrentCell.boardPosition.x;
         int currentY = CurrentCell.boardPosition.y;
 
-        CellState state = CurrentCell.board.ValidateCell(currentX, currentY + movement.y, this);
+        CellState state = Board.instance.ValidateCell(currentX, currentY + movement.y, this);
 
         if (state == CellState.OutOfBounds)
         {

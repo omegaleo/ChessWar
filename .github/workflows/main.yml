@@ -23,7 +23,7 @@ jobs:
     outputs:
       upload_url: ${{ steps.get_release.outputs.upload_url }}
   deploy-to-itch:
-    name: Deploy to Itch
+    name: Deploy to Itch ${{ matrix.channel }}
     needs: [buildAndTestForSomePlatforms]
     runs-on: ubuntu-latest
     strategy:
@@ -34,7 +34,6 @@ jobs:
           - StandaloneLinux64 # Build a Linux 64-bit standalone.
           - WebGL # WebGL.
     runs-on: ubuntu-latest
-    name: Deploy - Itch.io ${{ matrix.channel }}
     steps:
       - name: Download Artifacts
         uses: actions/download-artifact@v2

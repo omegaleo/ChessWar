@@ -13,4 +13,9 @@ public class ButtonFunctions : MonoBehaviour
     {
         GameManager.instance.StartGame(false);
     }
+
+    public void OpenHowToPlay()
+    {
+        HowToPlayScreen.instance.Open();
+    }
 }

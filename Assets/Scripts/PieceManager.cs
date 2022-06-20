@@ -307,12 +307,38 @@ public class PieceManager : MonoBehaviour
     {
         var checkingCells = GetCheckingCells(teamColor);
 
-        var movements = (teamColor == Color.black)
-            ? blackPieces.Where(x => x.IsAlive()).SelectMany(x => x.highlightedCells)
-            : whitePieces.Where(x => x.IsAlive()).SelectMany(x => x.highlightedCells);
+        var movements = GetAllFriendlyPossibleMovements(teamColor);
 
         var countInterceptions = movements.Count(x => checkingCells.Contains(x));
 
         return countInterceptions > 0;
+    }
+
+    /// <summary>
+    /// Get a list of all possible movement that a friendly piece might do
+    /// </summary>
+    /// <param name="color"></param>
+    /// <returns></returns>
+    public IEnumerable<Cell> GetAllFriendlyPossibleMovements(Color color)
+    {
+        var movements = (color == Color.black)
+            ? blackPieces.Where(x => x.IsAlive()).SelectMany(x => x.highlightedCells)
+            : whitePieces.Where(x => x.IsAlive()).SelectMany(x => x.highlightedCells);
+
+        return movements;
+    }
+    
+    /// <summary>
+    /// Get a list of all possible movement that an opposing piece might do
+    /// </summary>
+    /// <param name="color"></param>
+    /// <returns></returns>
+    public IEnumerable<Cell> GetAllOpposingPossibleMovements(Color color)
+    {
+        var movements = (color == Color.white)
+            ? blackPieces.Where(x => x.IsAlive()).SelectMany(x => x.highlightedCells)
+            : whitePieces.Where(x => x.IsAlive()).SelectMany(x => x.highlightedCells);
+
+        return movements;
     }
 }

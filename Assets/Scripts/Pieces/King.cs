@@ -31,13 +31,14 @@ public class King : BasePiece
     {
         base.CheckPathing();
 
-        try
+        var opposingPossibleMovements = PieceManager.instance.GetAllOpposingPossibleMovements(color);
+
+        highlightedCells = highlightedCells.Where(x => !opposingPossibleMovements.Contains(x)).ToList();
+
+        if (isFirstMove)
         {
             rightRook = GetRook(1, 3);
             leftRook = GetRook(-1, 4);
-        }
-        catch
-        {
         }
 
         if (IsChecked())
@@ -46,6 +47,11 @@ public class King : BasePiece
 
             highlightedCells = highlightedCells.Where(x => !checkingCells.Contains(x)).ToList();
         }
+    }
+
+    public override bool IsValidMovement(BasePiece piece)
+    {
+        return piece == null;
     }
 
     public bool IsChecked()
@@ -97,11 +103,6 @@ public class King : BasePiece
 
     private Rook GetRook(int direction, int count)
     {
-        if (!isFirstMove)
-        {
-            return null;
-        }
-
         int currentX = CurrentCell.boardPosition.x;
         int currentY = CurrentCell.boardPosition.y;
 

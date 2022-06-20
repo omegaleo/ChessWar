@@ -71,7 +71,7 @@ public class BasePiece : EventTrigger
         {
             currentX += xDir;
             currentY += yDir;
-
+            
             CellState state = CellState.None;
             state = Board.instance.ValidateCell(currentX, currentY, this);
 
@@ -87,7 +87,7 @@ public class BasePiece : EventTrigger
 
                         if (state != CellState.Friendly || !bypassMovement) // Check if upgraded rook and piece blocking is a friendly piece
                         {
-                            break; //Stop movement here
+                            break;
                         }
                     }
                     else
@@ -98,7 +98,7 @@ public class BasePiece : EventTrigger
                             isChecking = true;
                             CurrentCell.outlineImage.enabled = true;
                         }
-                        
+
                         break;
                     }
                 }
@@ -300,7 +300,7 @@ public class BasePiece : EventTrigger
         }
     }
 
-    public bool IsValidMovement(BasePiece piece)
+    public virtual bool IsValidMovement(BasePiece piece)
     {
         return piece.level <= this.level && this.GetType() != typeof(King) && piece.GetType() != typeof(King);
     }

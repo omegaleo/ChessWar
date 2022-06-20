@@ -39,6 +39,17 @@ public class Pawn : BasePiece
 
         if (state == targetState)
         {
+            var cell = Board.instance.allCells[targetX, targetY];
+
+            if (cell != null && cell.currentPiece != null)
+            {
+                var piece = cell.currentPiece;
+                if (piece.GetType() == typeof(King))
+                {
+                    return false;
+                }
+            }
+            
             highlightedCells.Add(Board.instance.allCells[targetX, targetY]);
             return true;
         }

@@ -268,9 +268,11 @@ public class PieceManager : MonoBehaviour
         
         for (int i = 0; i < Math.Abs(count); i++)
         {
-            curX += xIncrement;
-            curY += yIncrement;
-            
+            if (curX + xIncrement >= 0 && curX + xIncrement <= 7)
+                curX += xIncrement;
+            if (curY + yIncrement >= 0 && curY + yIncrement <= 7)
+                curY += yIncrement;
+
             var cell = Board.instance.allCells[curX, curY];
             cells.Add(cell);
         }

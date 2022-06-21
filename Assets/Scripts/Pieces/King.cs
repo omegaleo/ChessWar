@@ -119,34 +119,38 @@ public class King : BasePiece
             }
         }
 
-        Cell rookCell = Board.instance.allCells[currentX + (count * direction), currentY];
-        if (rookCell.currentPiece != null)
+        try
         {
-            Rook rook = null;
-
-            if (rookCell.currentPiece is Rook)
+            Cell rookCell = Board.instance.allCells[currentX + (count * direction), currentY];
+            if (rookCell.currentPiece != null)
             {
-                rook = (Rook) rookCell.currentPiece;
-            }
+                Rook rook = null;
 
-            if (rook != null)
-            {
-                if (rook.color != color || !rook.firstMove)
+                if (rookCell.currentPiece is Rook)
+                {
+                    rook = (Rook) rookCell.currentPiece;
+                }
+
+                if (rook != null)
+                {
+                    if (rook.color != color || !rook.firstMove)
+                    {
+                        return null;
+                    }
+            
+                    highlightedCells.Add(rook.castleTriggerCell);
+                    return rook;
+                }
+                else
                 {
                     return null;
                 }
-            
-                highlightedCells.Add(rook.castleTriggerCell);
-                return rook;
-            }
-            else
-            {
-                return null;
             }
         }
-        
-        
-        
+        catch
+        {
+        }
+
         return null;
     }
 }

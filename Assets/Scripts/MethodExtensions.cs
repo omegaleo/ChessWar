@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public static class MethodExtensions
 {
@@ -22,7 +23,7 @@ public static class MethodExtensions
         }
         else if(list.Count == 1)
         {
-            return list[0];
+            return list.FirstOrDefault();
         }
         else
         {

@@ -15,7 +15,7 @@ public class King : BasePiece
         isFirstMove = true;
     }
     
-    protected override void CheckEvolved()
+    public override void CheckEvolved()
     {
         return;
     }

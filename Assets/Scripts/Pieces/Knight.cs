@@ -5,6 +5,7 @@ public class Knight : BasePiece
     public Knight()
     {
         level = 6;
+        baseLevel = 6;
         evolveLevel = 9;
     }
 

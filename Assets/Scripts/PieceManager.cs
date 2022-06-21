@@ -52,7 +52,7 @@ public class PieceManager : MonoBehaviour
         {"Q", typeof(Queen)}
     };
 
-    [SerializeField] private List<PieceSprite> sprites = new List<PieceSprite>()
+    public List<PieceSprite> sprites = new List<PieceSprite>()
     {
         new PieceSprite() {pieceIdentifier = "P"},
         new PieceSprite() {pieceIdentifier = "R"},
@@ -258,15 +258,15 @@ public class PieceManager : MonoBehaviour
         }
     }
 
-    public void PromotePiece(Pawn pawn, Cell cell, Color teamColor)
+    public void PromotePiece(Pawn pawn, Cell cell, Color teamColor, string piece)
     {
-        int levelsToAdd = pawn.level - pawn.baseLevel;
-
         pawn.Kill(true);
-
-        BasePiece promotedPiece = CreatePiece(teamColor, "Q");
+        
+        BasePiece promotedPiece = CreatePiece(teamColor, piece);
         
         promotedPiece.Place(cell);
+        promotedPiece.level += pawn.GetAdditionalLevels();
+        promotedPiece.CheckEvolved();
 
         if (teamColor == Color.black)
         {

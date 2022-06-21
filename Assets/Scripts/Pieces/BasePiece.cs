@@ -26,7 +26,8 @@ public class BasePiece : EventTrigger
     public Cell targetCell;
 
     public int level;
-    public int evolveLevel = 3;
+    public static int baseLevel;
+    public static int evolveLevel = 3;
     public bool evolved = false;
     public bool bypassMovement = false; // For rook evolved form
     public bool isChecking = false;
@@ -124,7 +125,7 @@ public class BasePiece : EventTrigger
         highlightedCells.AddRange(GetCellPath(xDir, yDir, movement).ToList());
     }
 
-    protected virtual void CheckEvolved()
+    public virtual void CheckEvolved()
     {
         if (level >= evolveLevel && !evolved)
         {

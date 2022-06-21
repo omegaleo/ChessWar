@@ -3,13 +3,12 @@ using UnityEngine;
 
 public class Pawn : BasePiece
 {
-    public int baseLevel = 1; // To be used for promotion level calculation
-
     private bool isFirstMove = true;
     
     public Pawn()
     {
         level = 1;
+        baseLevel = 1;
     }
 
     public override void Setup(Color newColor, PieceSprite sprites)
@@ -112,7 +111,12 @@ public class Pawn : BasePiece
 
         if (state == CellState.OutOfBounds)
         {
-            PieceManager.instance.PromotePiece(this, CurrentCell, color);
+            PawnPromotionScreen.instance.Open(this, CurrentCell);
         }
+    }
+
+    public int GetAdditionalLevels()
+    {
+        return level - baseLevel;
     }
 }

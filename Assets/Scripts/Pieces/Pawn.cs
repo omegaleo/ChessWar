@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Pawn : BasePiece
@@ -14,6 +15,7 @@ public class Pawn : BasePiece
     public override void Setup(Color newColor, PieceSprite sprites)
     {
         base.Setup(newColor, sprites);
+
         movement = (color == PieceManager.instance.player2Color) ? new Vector3Int(0, -1, -1) : new Vector3Int(0, 1, 1);
     }
 
@@ -111,7 +113,20 @@ public class Pawn : BasePiece
 
         if (state == CellState.OutOfBounds)
         {
-            PawnPromotionScreen.instance.Open(this, CurrentCell);
+            if ((!GameManager.instance.botGame) || (GameManager.instance.botGame && color == PieceManager.instance.player1Color))
+            {
+                PawnPromotionScreen.instance.Open(this, CurrentCell);
+            }
+            else
+            {
+                PieceManager.instance.PromotePiece(this, CurrentCell, color, new List<string>()
+                {
+                    "Q",
+                    "R",
+                    "KN",
+                    "B"
+                }.Random());
+            }
         }
     }
 

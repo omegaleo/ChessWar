@@ -26,14 +26,14 @@ public class BasePiece : EventTrigger
     public Cell targetCell;
 
     public int level;
-    public static int baseLevel;
-    public static int evolveLevel = 3;
+    public int baseLevel;
+    public int evolveLevel = 3;
     public bool evolved = false;
     public bool bypassMovement = false; // For rook evolved form
     public bool isChecking = false;
     public bool moveTwice = false;
     public int move = 0;
-    
+
     public virtual void Setup(Color newColor, PieceSprite sprites)
     {
         color = newColor;
@@ -53,7 +53,7 @@ public class BasePiece : EventTrigger
         CurrentCell = newCell;
         OriginalCell = newCell;
         CurrentCell.currentPiece = this;
-        
+        SFXManager.instance.Play("pieceMoveSFX");
         // Object stuff
         transform.position = newCell.transform.position;
         gameObject.SetActive(true);
@@ -191,6 +191,16 @@ public class BasePiece : EventTrigger
 
     public virtual void Move()
     {
+        bool isSecondaryPlayer = color == PieceManager.instance.player2Color;
+        if (targetCell.currentPiece != null && targetCell.currentPiece.color == color && !(GameManager.instance.botGame && isSecondaryPlayer))
+        {
+            SFXManager.instance.Play("soulSFX");
+        }
+        else
+        {
+            SFXManager.instance.Play("pieceMoveSFX");
+        }
+        
         targetCell.RemovePiece();
 
         CurrentCell.currentPiece = null;

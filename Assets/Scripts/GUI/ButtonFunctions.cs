@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ButtonFunctions : MonoBehaviour
 {
@@ -17,5 +18,16 @@ public class ButtonFunctions : MonoBehaviour
     public void OpenHowToPlay()
     {
         HowToPlayScreen.instance.Open();
+    }
+    
+    public void Rematch()
+    {
+        PieceManager.instance.ResetGame();
+        CheckmateScreen.instance.Close();
+    }
+
+    public void ReturnToTitleScreen()
+    {
+        SceneManager.LoadScene(0);
     }
 }

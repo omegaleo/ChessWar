@@ -18,6 +18,9 @@ public class PieceManager : MonoBehaviour
     [SerializeField] private List<BasePiece> kings = new List<BasePiece>();
 
     public bool isDraggingPiece = false;
+
+    [SerializeField] private Color player1Color = Color.white;
+    [SerializeField] private Color player2Color = Color.black;
     
     private string[] pieceOrder = new string[16]
     {
@@ -75,9 +78,12 @@ public class PieceManager : MonoBehaviour
     {
         whitePieces = CreatePieces(Color.white);
         blackPieces = CreatePieces(Color.black);
+
+        player1Color = new List<Color>() {Color.white, Color.black}.Random();
+        player2Color = (player1Color == Color.white) ? Color.black : Color.white;
         
-        PlacePieces(1, 0, whitePieces);
-        PlacePieces(6, 7, blackPieces);
+        PlacePieces(1, 0, (player1Color == Color.white)? whitePieces : blackPieces);
+        PlacePieces(6, 7, (player1Color != Color.white)? whitePieces : blackPieces);
 
         SwitchSides(Color.black);
     }
@@ -147,11 +153,25 @@ public class PieceManager : MonoBehaviour
 
         if (blackKing.IsCheckMate())
         {
-            Debug.Log("White wins!");
+            if (player1Color == Color.black)
+            {
+                CheckmateScreen.instance.Open((GameManager.instance.botGame)? "DEFEAT":"WHITE WINS");
+            }
+            else
+            {
+                CheckmateScreen.instance.Open((GameManager.instance.botGame)? "VICTORY":"WHITE WINS");
+            }
         }
         else if (whiteKing.IsCheckMate())
         {
-            Debug.Log("Black wins!");
+            if (player1Color == Color.white)
+            {
+                CheckmateScreen.instance.Open((GameManager.instance.botGame)? "DEFEAT":"BLACK WINS");
+            }
+            else
+            {
+                CheckmateScreen.instance.Open((GameManager.instance.botGame)? "VICTORY":"BLACK WINS");
+            }
         }
 
         bool isBlackTurn = color == Color.white;
@@ -167,7 +187,7 @@ public class PieceManager : MonoBehaviour
             piece.enabled = isPartOfTeam;
         }
 
-        if (isBlackTurn && GameManager.instance.botGame)
+        if (((isBlackTurn && player2Color == Color.black) || (!isBlackTurn && player2Color == Color.white)) && GameManager.instance.botGame)
         {
             BotMove();
         }
@@ -176,7 +196,9 @@ public class PieceManager : MonoBehaviour
     void BotMove()
     {
         // For now, get a random piece that can move and move it to a random position
-        var pieces = blackPieces.Where(x => x.IsAlive()).ToList();
+        var teamPieces = (player2Color == Color.black) ? blackPieces : whitePieces;
+        
+        var pieces = teamPieces.Where(x => x.IsAlive()).ToList();
 
         pieces.ForEach(x => x.CheckPathing());
         var piece = pieces.Where(x => x.highlightedCells.Any()).ToList().Random();
@@ -187,10 +209,10 @@ public class PieceManager : MonoBehaviour
             piece.Move();
         }
 
-        SwitchSides(Color.black);
+        SwitchSides(player2Color);
     }
     
-    public void ResetPieces()
+    public void ResetGame()
     {
         foreach (BasePiece piece in promotedPieces)
         {
@@ -206,6 +228,12 @@ public class PieceManager : MonoBehaviour
         foreach (BasePiece piece in blackPieces)
         {
             piece.Reset();
+        }
+
+        foreach (Cell cell in Board.instance.allCells)
+        {
+            cell.checkedImage.enabled = false;
+            cell.bloodSplatterImage.enabled = false;
         }
     }
 
@@ -299,8 +327,8 @@ public class PieceManager : MonoBehaviour
     public IEnumerable<Cell> GetCheckingCells(Color color)
     {
         return (color == Color.black)
-            ? whitePieces.Where(x => x.isChecking && x.IsAlive()).SelectMany(x => CheckingCellPath(x.CurrentCell, GetKing(Color.black)))
-            : blackPieces.Where(x => x.isChecking && x.IsAlive()).SelectMany(x => CheckingCellPath(x.CurrentCell, GetKing(Color.white)));
+            ? whitePieces.Where(x => x.isChecking && x.IsAlive() && x.GetType() != typeof(Pawn)).SelectMany(x => CheckingCellPath(x.CurrentCell, GetKing(Color.black)))
+            : blackPieces.Where(x => x.isChecking && x.IsAlive() && x.GetType() != typeof(Pawn)).SelectMany(x => CheckingCellPath(x.CurrentCell, GetKing(Color.white)));
     }
     
     public bool CanCheckmateBePrevented(Color teamColor)

@@ -56,7 +56,8 @@ public class King : BasePiece
 
     public bool IsChecked()
     {
-        bool isChecked = PieceManager.instance.GetCheckingCells(color).Any();
+        var checkingCells = PieceManager.instance.GetCheckingCells(color).Where(x => x.currentPiece != null && x.currentPiece.color != color);
+        bool isChecked = checkingCells.Any();
 
         CurrentCell.checkedImage.enabled = isChecked;
         

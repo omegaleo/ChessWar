@@ -15,7 +15,7 @@ public class Pawn : BasePiece
     public override void Setup(Color newColor, PieceSprite sprites)
     {
         base.Setup(newColor, sprites);
-        movement = (color == Color.black) ? new Vector3Int(0, -1, -1) : new Vector3Int(0, 1, 1);
+        movement = (color == PieceManager.instance.player2Color) ? new Vector3Int(0, -1, -1) : new Vector3Int(0, 1, 1);
     }
 
     public override void Evolve()

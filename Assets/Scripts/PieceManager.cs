@@ -19,8 +19,8 @@ public class PieceManager : MonoBehaviour
 
     public bool isDraggingPiece = false;
 
-    [SerializeField] private Color player1Color = Color.white;
-    [SerializeField] private Color player2Color = Color.black;
+    public Color player1Color = Color.white;
+    public Color player2Color = Color.black;
     
     private string[] pieceOrder = new string[16]
     {
@@ -126,7 +126,7 @@ public class PieceManager : MonoBehaviour
 
     public King GetKing(Color teamColor)
     {
-        return (King)kings.FirstOrDefault(x => x.color == teamColor);
+        return (King)kings.FirstOrDefault(x =>  x.color == teamColor);
     }
     
     private void PlacePieces(int pawnRow, int royaltyRow, List<BasePiece> pieces)
@@ -222,19 +222,28 @@ public class PieceManager : MonoBehaviour
         
         foreach (BasePiece piece in whitePieces)
         {
-            piece.Reset();
+            piece.Kill();
+            Destroy(piece.gameObject);
         }
         
         foreach (BasePiece piece in blackPieces)
         {
-            piece.Reset();
+            piece.Kill();
+            Destroy(piece.gameObject);
         }
+        
+        promotedPieces.Clear();
+        whitePieces.Clear();
+        blackPieces.Clear();
+        kings.Clear();
 
         foreach (Cell cell in Board.instance.allCells)
         {
             cell.checkedImage.enabled = false;
             cell.bloodSplatterImage.enabled = false;
         }
+        
+        Setup();
     }
 
     public void EvolvePieces(Color teamColor)

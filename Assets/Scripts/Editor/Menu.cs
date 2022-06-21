@@ -19,4 +19,13 @@ public class Menu
             GameManager.instance.StartGame(true);
         }
     }
+    
+    [MenuItem("Game Menu/Restart")]
+    public static void RestartGame()
+    {
+        if (PieceManager.instance != null)
+        {
+            PieceManager.instance.ResetGame();
+        }
+    }
 }

@@ -76,11 +76,11 @@ public class PieceManager : MonoBehaviour
 
     public void Setup()
     {
-        whitePieces = CreatePieces(Color.white);
-        blackPieces = CreatePieces(Color.black);
-
         player1Color = new List<Color>() {Color.white, Color.black}.Random();
         player2Color = (player1Color == Color.white) ? Color.black : Color.white;
+        
+        whitePieces = CreatePieces(Color.white);
+        blackPieces = CreatePieces(Color.black);
         
         PlacePieces(1, 0, (player1Color == Color.white)? whitePieces : blackPieces);
         PlacePieces(6, 7, (player1Color != Color.white)? whitePieces : blackPieces);
@@ -150,9 +150,11 @@ public class PieceManager : MonoBehaviour
     {
         King blackKing = GetKing(Color.black);
         King whiteKing = GetKing(Color.white);
-
+        bool gameOver = false;
+        
         if (blackKing.IsCheckMate())
         {
+            gameOver = true;
             if (player1Color == Color.black)
             {
                 CheckmateScreen.instance.Open((GameManager.instance.botGame)? "DEFEAT":"WHITE WINS");
@@ -164,6 +166,7 @@ public class PieceManager : MonoBehaviour
         }
         else if (whiteKing.IsCheckMate())
         {
+            gameOver = true;
             if (player1Color == Color.white)
             {
                 CheckmateScreen.instance.Open((GameManager.instance.botGame)? "DEFEAT":"BLACK WINS");
@@ -174,22 +177,25 @@ public class PieceManager : MonoBehaviour
             }
         }
 
-        bool isBlackTurn = color == Color.white;
+        if (!gameOver)
+        {
+            bool isBlackTurn = color == Color.white;
         
-        SetInteractive(whitePieces, !isBlackTurn);
-        SetInteractive(blackPieces, isBlackTurn);
+            SetInteractive(whitePieces, !isBlackTurn);
+            SetInteractive(blackPieces, isBlackTurn);
 
-        foreach (BasePiece piece in promotedPieces)
-        {
-            bool isBlackPiece = piece.color == Color.black;
-            bool isPartOfTeam = (isBlackPiece && isBlackTurn) || (!isBlackPiece && !isBlackTurn);
+            foreach (BasePiece piece in promotedPieces)
+            {
+                bool isBlackPiece = piece.color == Color.black;
+                bool isPartOfTeam = (isBlackPiece && isBlackTurn) || (!isBlackPiece && !isBlackTurn);
 
-            piece.enabled = isPartOfTeam;
-        }
+                piece.enabled = isPartOfTeam;
+            }
 
-        if (((isBlackTurn && player2Color == Color.black) || (!isBlackTurn && player2Color == Color.white)) && GameManager.instance.botGame)
-        {
-            BotMove();
+            if (((isBlackTurn && player2Color == Color.black) || (!isBlackTurn && player2Color == Color.white)) && GameManager.instance.botGame)
+            {
+                BotMove();
+            }
         }
     }
 
@@ -260,12 +266,13 @@ public class PieceManager : MonoBehaviour
 
     public void PromotePiece(Pawn pawn, Cell cell, Color teamColor, string piece)
     {
+        int additionalLevels = pawn.GetAdditionalLevels();
         pawn.Kill(true);
         
         BasePiece promotedPiece = CreatePiece(teamColor, piece);
         
         promotedPiece.Place(cell);
-        promotedPiece.level += pawn.GetAdditionalLevels();
+        promotedPiece.level += additionalLevels;
         promotedPiece.CheckEvolved();
 
         if (teamColor == Color.black)

@@ -5,13 +5,11 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class GameManager : InstancedBehaviour<GameManager>
 {
-    public static GameManager instance;
-
     public bool botGame;
     
-    private void Awake()
+    protected override void Awake()
     {
         if (instance == null)
         {

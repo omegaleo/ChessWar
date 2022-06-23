@@ -12,15 +12,13 @@ public class PieceLevelAssociation
     public int evolveLevel;
 }
 
-public class PawnPromotionScreen : MonoBehaviour
+public class PawnPromotionScreen : InstancedBehaviour<PawnPromotionScreen>
 {
     [SerializeField] private GameObject panel;
     [SerializeField] private PromotionChoice queen;
     [SerializeField] private PromotionChoice rook;
     [SerializeField] private PromotionChoice knight;
     [SerializeField] private PromotionChoice bishop;
-
-    public static PawnPromotionScreen instance;
 
     [SerializeField] private List<PieceLevelAssociation> levels = new List<PieceLevelAssociation>()
     {
@@ -29,14 +27,6 @@ public class PawnPromotionScreen : MonoBehaviour
         new PieceLevelAssociation() {baseLevel = 6, evolveLevel = 9, name = "KN"},
         new PieceLevelAssociation() {baseLevel = 8, evolveLevel = 10, name = "Q"}
     };
-
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-    }
 
     public void Open(Pawn pawn, Cell cell)
     {

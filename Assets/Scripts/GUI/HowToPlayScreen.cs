@@ -4,23 +4,13 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class HowToPlayScreen : MonoBehaviour
+public class HowToPlayScreen : InstancedBehaviour<HowToPlayScreen>
 {
     [SerializeField] private int currentPage = 0;
     [SerializeField] private GameObject panel;
     [SerializeField] private List<GameObject> pages;
     [SerializeField] private TMP_Text leftBtn;
     [SerializeField] private TMP_Text rightBtn;
-    
-    public static HowToPlayScreen instance;
-
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-    }
 
     public void PreviousPage()
     {

@@ -13,27 +13,13 @@ public enum CellState
     OutOfBounds
 }
 
-public class Board : MonoBehaviour
+public class Board : InstancedBehaviour<Board>
 {
     [SerializeField] private GameObject cellPrefab;
     public Cell[,] allCells = new Cell[8, 8];
 
     [SerializeField] private float size = 50f;
     [SerializeField] private float off = 25f;
-
-    public static Board instance;
-
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(this.gameObject);
-        }
-    }
 
     private void Start()
     {

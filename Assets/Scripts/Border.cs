@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Border : MonoBehaviour
+public class Border : InstancedBehaviour<Border>
 {
     [SerializeField] private GameObject cellPrefab;
     public BorderCell[,] allCells = new BorderCell[20, 20];
@@ -32,18 +32,6 @@ public class Border : MonoBehaviour
     [SerializeField] private Sprite bottomRightSprite;
     [SerializeField] private Sprite topLeftSprite;
     [SerializeField] private Sprite topRightSprite;
-
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(this.gameObject);
-        }
-    }
 
     private void Start()
     {

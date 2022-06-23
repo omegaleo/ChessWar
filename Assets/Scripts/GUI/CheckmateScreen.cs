@@ -4,21 +4,11 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class CheckmateScreen : MonoBehaviour
+public class CheckmateScreen : InstancedBehaviour<CheckmateScreen>
 {
     [SerializeField] private GameObject panel;
 
     [SerializeField] private TMP_Text title;
-
-    public static CheckmateScreen instance;
-
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-    }
 
     public void Open(string text)
     {

@@ -5,10 +5,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class PieceManager : MonoBehaviour
+public class PieceManager : InstancedBehaviour<PieceManager>
 {
-    public static PieceManager instance;
-
     public bool isKingAlive = true;
     
     [SerializeField] private GameObject piecePrefab;
@@ -61,19 +59,7 @@ public class PieceManager : MonoBehaviour
         new PieceSprite() {pieceIdentifier = "K"},
         new PieceSprite() {pieceIdentifier = "Q"},
     };
-
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(this.gameObject);
-        }
-    }
-
+    
     public void Setup()
     {
         player1Color = new List<Color>() {Color.white, Color.black}.Random();

@@ -137,6 +137,8 @@ public class BasePiece : EventTrigger
     {
         GetComponent<Image>().sprite = (color == Color.black) ? eBlackSprite : eWhiteSprite;
         evolved = true;
+        
+        PieceManager.instance.CheckIfKingCanEvolve(color);
     }
 
     public virtual void CheckPathing()
@@ -213,7 +215,7 @@ public class BasePiece : EventTrigger
         // Check if any of the kings is in check
         PieceManager.instance.UpdateIsChecked(Color.white);
         PieceManager.instance.UpdateIsChecked(Color.black);
-        
+
         targetCell = null;
     }
 

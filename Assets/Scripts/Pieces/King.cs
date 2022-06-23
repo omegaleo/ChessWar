@@ -102,6 +102,62 @@ public class King : BasePiece
         return rook != null && rook.castleTriggerCell == CurrentCell;
     }
 
+    public void TrySwitchRook()
+    {
+        if (IsChecked())
+        {
+            var rooks = PieceManager.instance.GetRooks(color);
+
+            if (rooks.Any())
+            {
+                var rook = GetClosestRook(rooks);
+
+                if (rook != null)
+                {
+                    var cell = CurrentCell;
+                    var rookCell = rook.CurrentCell;
+
+                    cell.currentPiece = rook;
+                    rookCell.currentPiece = this;
+
+                    CurrentCell = rookCell;
+                    rook.CurrentCell = cell;
+                    
+                    transform.position = CurrentCell.transform.position;
+                    rook.transform.position = rook.CurrentCell.transform.position;
+                    
+                    SFXManager.instance.Play("pieceMoveSFX");
+                    SFXManager.instance.Play("pieceMoveSFX");
+
+                    CurrentCell.checkedImage.enabled = false;
+                    rook.CurrentCell.checkedImage.enabled = false;
+                    
+                    PieceManager.instance.UpdateIsChecked(color);
+                    IsChecked();
+                }
+            }
+        }
+    }
+
+    private BasePiece GetClosestRook(List<BasePiece> rooks)
+    {
+        var closestRook = rooks.FirstOrDefault();
+        float currentDistance =
+            Vector2Int.Distance(CurrentCell.boardPosition, closestRook.CurrentCell.boardPosition);
+
+        foreach (var rook in rooks)
+        {
+            var distance = Vector2Int.Distance(CurrentCell.boardPosition, rook.CurrentCell.boardPosition);
+
+            if (distance < currentDistance)
+            {
+                closestRook = rook;
+            }
+        }
+
+        return closestRook;
+    }
+
     private Rook GetRook(int direction, int count)
     {
         int currentX = CurrentCell.boardPosition.x;

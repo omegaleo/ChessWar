@@ -152,6 +152,18 @@ public class PieceManager : MonoBehaviour
         King whiteKing = GetKing(Color.white);
         bool gameOver = false;
         
+        // Check if Kings are checked and evolved to check if they can switch with a Rook
+        if (blackKing.IsChecked() && blackKing.evolved)
+        {
+            blackKing.TrySwitchRook();
+        }
+
+        if (whiteKing.IsChecked() && whiteKing.evolved)
+        {
+            whiteKing.TrySwitchRook();
+        }
+        
+        // Check if CheckMate
         if (blackKing.IsCheckMate())
         {
             gameOver = true;
@@ -384,5 +396,40 @@ public class PieceManager : MonoBehaviour
             : whitePieces.Where(x => x.IsAlive()).SelectMany(x => x.highlightedCells);
 
         return movements;
+    }
+
+    /// <summary>
+    /// Method to check if the King belonging to that color can evolve
+    /// </summary>
+    /// <param name="teamColor"></param>
+    public void CheckIfKingCanEvolve(Color teamColor)
+    {
+        King king = GetKing(teamColor);
+        
+        if (king.evolved) return; // Skip if the king is already evolved
+
+        int count = (teamColor == Color.black) ? blackPieces.Count(x => x.evolved) : whitePieces.Count(x => x.evolved) ;
+
+        if (count >= 3)
+        {
+            king.Evolve();
+        }
+    }
+
+    /// <summary>
+    /// Get a list of Rooks available
+    /// </summary>
+    /// <param name="teamColor"></param>
+    /// <returns></returns>
+    public List<BasePiece> GetRooks(Color teamColor)
+    {
+        if (teamColor == Color.black)
+        {
+            return blackPieces.Where(x => x.GetType() == typeof(Rook) && x.IsAlive()).ToList();
+        }
+        else
+        {
+            return whitePieces.Where(x => x.GetType() == typeof(Rook) && x.IsAlive()).ToList();
+        }
     }
 }

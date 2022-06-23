@@ -3,18 +3,33 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Audio;
 
 [RequireComponent(typeof(AudioSource))]
-public class MusicManager : MonoBehaviour
+public class MusicManager : AudioManager<MusicManager>
 {
     [SerializeField] private List<AudioClip> music;
     // Flag to be used when there's more music in the soundtrack and we want to switch to the next one when the current one is done
     [SerializeField] private bool playNextWhenDone;
     
     private AudioSource source;
-    
-    private void Start()
+
+    [SerializeField] private AudioMixer mixer;
+
+    protected override AudioMixer GetMixer()
     {
+        return mixer;
+    }
+    
+    protected override string PlayerPrefTag()
+    {
+        return "musicVolume";
+    }
+    
+    protected override void Start()
+    {
+        base.Start();
+        
         source = GetComponent<AudioSource>();
         source.clip = music.Random();
         source.loop = !playNextWhenDone;

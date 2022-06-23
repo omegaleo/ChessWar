@@ -30,4 +30,14 @@ public class ButtonFunctions : MonoBehaviour
     {
         SceneManager.LoadScene(0);
     }
+
+    public void OptionsMenuOpen()
+    {
+        OptionsMenu.instance.Open();
+    }
+    
+    public void OptionsMenuClose()
+    {
+        OptionsMenu.instance.Close();
+    }
 }

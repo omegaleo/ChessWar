@@ -25,10 +25,11 @@ public class HowToPlayScreen : MonoBehaviour
     public void PreviousPage()
     {
         currentPage--;
-        
+        rightBtn.text = "<sprite=1>";
         if (currentPage < 0)
         {
             panel.SetActive(false);
+            return;
         }
         else if (currentPage == 0)
         {
@@ -36,17 +37,19 @@ public class HowToPlayScreen : MonoBehaviour
         }
         else
         {
-            rightBtn.text = "<sprite=0>";
+            leftBtn.text = "<sprite=0>";
         }
+        SetActivePage(currentPage);
     }
 
     public void NextPage()
     {
         currentPage++;
-        
+        leftBtn.text = "<sprite=0>";
         if (currentPage >= pages.Count)
         {
-            panel.SetActive(true);
+            panel.SetActive(false);
+            return;
         }
         else if (currentPage == pages.Count - 1)
         {
@@ -56,6 +59,7 @@ public class HowToPlayScreen : MonoBehaviour
         {
             rightBtn.text = "<sprite=1>";
         }
+        SetActivePage(currentPage);
     }
     
     public void Open()

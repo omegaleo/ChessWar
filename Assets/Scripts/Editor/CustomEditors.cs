@@ -2,6 +2,9 @@
 using UnityEditor;
 using UnityEditor.UI;
 
+/// <summary>
+/// Main class to host all classes related to Editors/EditorWindows
+/// </summary>
 [CustomEditor(typeof(TitleScreenButton))]
 public class TitleScreenButtonEditor : ButtonEditor
 {

@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.Audio;
 
+/// <summary>
+/// Main class used to instance Controllers for Audio(e.g. Music and Sound Effects), implements methods that make it easier to manage the Audio Mixer Groups
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public class AudioManager<T>:InstancedBehaviour<T> where T:AudioManager<T>
 {
     protected virtual string PlayerPrefTag()

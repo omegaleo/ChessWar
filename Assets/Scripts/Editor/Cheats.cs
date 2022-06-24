@@ -1,26 +1,26 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace Editor
+/// <summary>
+/// Main class to host the cheats part of the game's menu in the Editor
+/// </summary>
+public class Cheats
 {
-    public class Cheats
+    [MenuItem("Game Menu/Cheats/Evolve Black")]
+    public static void EvolveBlack()
     {
-        [MenuItem("Game Menu/Cheats/Evolve Black")]
-        public static void EvolveBlack()
+        if (PieceManager.instance != null)
         {
-            if (PieceManager.instance != null)
-            {
-                PieceManager.instance.EvolvePieces(Color.black);
-            }
+            PieceManager.instance.EvolvePieces(Color.black);
         }
+    }
 
-        [MenuItem("Game Menu/Cheats/Evolve White")]
-        public static void EvolveWhite()
+    [MenuItem("Game Menu/Cheats/Evolve White")]
+    public static void EvolveWhite()
+    {
+        if (PieceManager.instance != null)
         {
-            if (PieceManager.instance != null)
-            {
-                PieceManager.instance.EvolvePieces(Color.white);
-            }
+            PieceManager.instance.EvolvePieces(Color.white);
         }
     }
 }

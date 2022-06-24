@@ -1,7 +1,7 @@
 ﻿namespace Libraries
 {
     /// <summary>
-    /// Custom class for math with integers
+    /// Custom class for math with integers, currently not in use
     /// </summary>
     public static class MathI
     {

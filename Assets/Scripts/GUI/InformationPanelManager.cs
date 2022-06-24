@@ -25,7 +25,7 @@ public class InformationPanelManager : InstancedBehaviour<InformationPanelManage
             (piece.evolved) ? piece.eBlackSprite : piece.blackSprite :
             (piece.evolved) ? piece.eWhiteSprite : piece.whiteSprite;
 
-        currentDescription.text = $"<color=#76428a>{nameof(piece)}</color>{Environment.NewLine}<size=24>Level {piece.level}</size>";
+        currentDescription.text = $"<color=#76428a>{piece.GetType().FullName}</color>{Environment.NewLine}<size=24>Level {piece.level}</size>";
     }
 
     public void CloseCurrent()
@@ -41,7 +41,7 @@ public class InformationPanelManager : InstancedBehaviour<InformationPanelManage
             (piece.evolved) ? piece.eBlackSprite : piece.blackSprite :
             (piece.evolved) ? piece.eWhiteSprite : piece.whiteSprite;
 
-        targetDescription.text = $"<color=#76428a>{nameof(piece)}</color>{Environment.NewLine}<size=24>Level {piece.level}</size>";
+        targetDescription.text = $"<color=#76428a>{piece.GetType().FullName}</color>{Environment.NewLine}<size=24>Level {piece.level}</size>";
     }
 
     public void CloseTarget()

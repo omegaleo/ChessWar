@@ -40,4 +40,9 @@ public class ButtonFunctions : MonoBehaviour
     {
         OptionsMenu.instance.Close();
     }
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
 }

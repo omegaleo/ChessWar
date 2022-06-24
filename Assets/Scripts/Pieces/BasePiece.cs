@@ -263,17 +263,16 @@ public class BasePiece : EventTrigger
     public override void OnDrag(PointerEventData eventData)
     {
         base.OnDrag(eventData);
-
-        transform.position += ((Vector3) eventData.delta) * Time.deltaTime;
-
+        
+        var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         targetCell = null;
         
         foreach (Cell cell in highlightedCells)
         {
-            if (RectTransformUtility.RectangleContainsScreenPoint(cell.rectTransform, Camera.main.ScreenToWorldPoint(Input.mousePosition)))
+            if (RectTransformUtility.RectangleContainsScreenPoint(cell.rectTransform, mousePos))
             {
                 targetCell = cell;
-
+                transform.position = targetCell.gameObject.transform.position;
                 if (targetCell.currentPiece != null)
                 {
                     InformationPanelManager.instance.OpenTarget(targetCell.currentPiece);

@@ -232,15 +232,20 @@ public class BasePiece : EventTrigger
             CheckPathing();
         
             ShowCells();
+            
+            InformationPanelManager.instance.OpenCurrent(this);
         }
     }
 
     public override void OnPointerExit(PointerEventData eventData)
     {
         base.OnPointerExit(eventData);
-        
+
         if (!PieceManager.instance.isDraggingPiece)
+        {
             ClearCells();
+            InformationPanelManager.instance.CloseCurrent();
+        }
     }
 
     public override void OnBeginDrag(PointerEventData eventData)
@@ -251,6 +256,8 @@ public class BasePiece : EventTrigger
         
         ShowCells();
         PieceManager.instance.isDraggingPiece = true;
+        
+        InformationPanelManager.instance.OpenCurrent(this);
     }
     
     public override void OnDrag(PointerEventData eventData)
@@ -266,6 +273,12 @@ public class BasePiece : EventTrigger
             if (RectTransformUtility.RectangleContainsScreenPoint(cell.rectTransform, Camera.main.ScreenToWorldPoint(Input.mousePosition)))
             {
                 targetCell = cell;
+
+                if (targetCell.currentPiece != null)
+                {
+                    InformationPanelManager.instance.OpenTarget(targetCell.currentPiece);
+                }
+                
                 break;
             }
         }
@@ -275,6 +288,10 @@ public class BasePiece : EventTrigger
     {
         base.OnEndDrag(eventData);
         PieceManager.instance.isDraggingPiece = false;
+        
+        InformationPanelManager.instance.CloseCurrent();
+        InformationPanelManager.instance.CloseTarget();
+        
         ClearCells();
 
         if (!targetCell)

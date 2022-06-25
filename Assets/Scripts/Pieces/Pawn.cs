@@ -25,12 +25,10 @@ public class Pawn : BasePiece
         movement = new Vector3Int(1, 1, 1);
     }
 
-    public override void Move()
+    protected override void ExecuteMovement(Cell cell)
     {
-        base.Move();
-
         isFirstMove = false;
-        
+        base.ExecuteMovement(cell);
         CheckForPromotion();
     }
 

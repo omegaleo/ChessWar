@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -34,6 +35,17 @@ public class BasePiece : EventTrigger
     public bool moveTwice = false;
     public int move = 0;
 
+    public enum AnimationType
+    {
+        CLAIM,
+        ATTACK,
+        SACRIFICE,
+        ATTACKED // Will be handled by the Unity animation component
+    }
+
+    public Animator animator;
+    public Image animatorImage;
+
     public virtual void Setup(Color newColor, PieceSprite sprites)
     {
         color = newColor;
@@ -45,8 +57,57 @@ public class BasePiece : EventTrigger
         
         GetComponent<Image>().sprite = (color == Color.black) ? blackSprite : whiteSprite;
         RectTransform = GetComponent<RectTransform>();
+
+        animator = transform.GetChild(0).GetComponent<Animator>();
+        animatorImage = transform.GetChild(0).GetComponent<Image>();
     }
 
+    /// <summary>
+    /// Handle animations for the piece in question
+    /// </summary>
+    /// <param name="type">Type of animation to execute</param>
+    /// <param name="methodToCallWhenDone">Method to call when the animation is done, can be used to chain animations, example:
+    /// When the sacrifice animation is done, call the claim animation in the other piece</param>
+    /// <returns></returns>
+    public IEnumerator ExecuteAnimation(AnimationType type, UnityAction methodToCallWhenDone = null)
+    {
+        // Call animator
+        string animationName = "";
+        
+        switch (type)
+        {
+            case AnimationType.CLAIM:
+
+                break;
+            case AnimationType.ATTACK:
+                animationName = "Attack";
+                break;
+            case AnimationType.ATTACKED:
+                animationName = "Attacked";
+                break;
+            case AnimationType.SACRIFICE:
+
+                break;
+        }
+        
+        animator.SetBool(animationName, true);
+
+        while (!animator.AnimatorIsPlaying())
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+        
+        // Wait for animation to stop
+        yield return animator.WaitForAnimation();
+
+        animator.SetBool(animationName, false);
+        
+        if (methodToCallWhenDone != null)
+        {
+            methodToCallWhenDone.Invoke();
+        }
+    }
+    
     public virtual void Place(Cell newCell)
     {
         // Cell stuff
@@ -194,29 +255,66 @@ public class BasePiece : EventTrigger
     public virtual void Move()
     {
         bool isSecondaryPlayer = color == PieceManager.instance.player2Color;
-        if (targetCell.currentPiece != null && targetCell.currentPiece.color == color && !(GameManager.instance.botGame && isSecondaryPlayer))
+        if (targetCell.currentPiece != null)
         {
-            SFXManager.instance.Play("soulSFX");
+            if (targetCell.currentPiece.color == color)
+            {
+
+                if (!(GameManager.instance.botGame && isSecondaryPlayer))
+                {
+                    SFXManager.instance.Play("soulSFX");
+                }
+                
+                ExecuteMovement(targetCell);
+            }
+            else
+            {
+                StartCoroutine(targetCell.currentPiece.ExecuteAnimation(AnimationType.ATTACKED, () =>
+                {
+                    ExecuteMovement(targetCell);
+                }));
+            }
         }
         else
         {
-            SFXManager.instance.Play("pieceMoveSFX");
+            ExecuteMovement(targetCell);
         }
+    }
+
+    protected virtual void ExecuteMovement(Cell cell)
+    {
+        if (cell == null)
+            return;
         
-        targetCell.RemovePiece();
+        SFXManager.instance.Play("pieceMoveSFX");
+        
+        cell.RemovePiece();
 
         CurrentCell.currentPiece = null;
-
-        CurrentCell = targetCell;
+        CurrentCell.outlineImage.enabled = false;
+        CurrentCell = cell;
         CurrentCell.currentPiece = this;
 
         transform.position = CurrentCell.transform.position;
-        
+
         // Check if any of the kings is in check
         PieceManager.instance.UpdateIsChecked(Color.white);
         PieceManager.instance.UpdateIsChecked(Color.black);
 
         targetCell = null;
+        
+        move++;
+        
+        highlightedCells.ForEach((x) =>
+        {
+            x.outlineImage.enabled = false;
+        });
+        
+        if (!moveTwice || move > 1)
+        {
+            move = 0;
+            PieceManager.instance.SwitchSides(color);
+        }
     }
 
     #endregion
@@ -291,11 +389,12 @@ public class BasePiece : EventTrigger
         InformationPanelManager.instance.CloseCurrent();
         InformationPanelManager.instance.CloseTarget();
         
+        transform.position = CurrentCell.gameObject.transform.position;
+        
         ClearCells();
 
         if (!targetCell)
         {
-            transform.position = CurrentCell.gameObject.transform.position;
             return;
         }
         
@@ -320,13 +419,6 @@ public class BasePiece : EventTrigger
         }
         
         Move();
-        move++;
-        
-        if (!moveTwice || move > 1)
-        {
-            move = 0;
-            PieceManager.instance.SwitchSides(color);
-        }
     }
 
     public virtual bool IsValidMovement(BasePiece piece)

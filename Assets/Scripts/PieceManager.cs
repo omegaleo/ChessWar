@@ -138,6 +138,8 @@ public class PieceManager : InstancedBehaviour<PieceManager>
         King whiteKing = GetKing(Color.white);
         bool gameOver = false;
         
+        Board.instance.ClearSelectedCells();
+        
         // Check if Kings are checked and evolved to check if they can switch with a Rook
         if (blackKing.IsChecked() && blackKing.evolved)
         {

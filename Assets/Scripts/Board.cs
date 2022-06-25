@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -79,5 +80,13 @@ public class Board : InstancedBehaviour<Board>
         }
 
         return CellState.Free;
+    }
+
+    public void ClearSelectedCells()
+    {
+        foreach (var cell in allCells)
+        {
+            cell.outlineImage.enabled = false;
+        }
     }
 }

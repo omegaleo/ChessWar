@@ -2048,31 +2048,49 @@ MonoBehaviour:
     blackSprite: {fileID: 1371983526, guid: 7e5d6b4687739cd42b49d3ca6964aa21, type: 3}
     eWhiteSprite: {fileID: 335794017, guid: 7e5d6b4687739cd42b49d3ca6964aa21, type: 3}
     eBlackSprite: {fileID: 1827441270, guid: 7e5d6b4687739cd42b49d3ca6964aa21, type: 3}
+    AttackAnimation: []
+    ClaimSacrificeAnimation: []
+    SacrificeAnimation: []
   - pieceIdentifier: R
     whiteSprite: {fileID: 1675626326, guid: 7e5d6b4687739cd42b49d3ca6964aa21, type: 3}
     blackSprite: {fileID: 1869603081, guid: 7e5d6b4687739cd42b49d3ca6964aa21, type: 3}
     eWhiteSprite: {fileID: -239545883, guid: 7e5d6b4687739cd42b49d3ca6964aa21, type: 3}
     eBlackSprite: {fileID: -369616238, guid: 7e5d6b4687739cd42b49d3ca6964aa21, type: 3}
+    AttackAnimation: []
+    ClaimSacrificeAnimation: []
+    SacrificeAnimation: []
   - pieceIdentifier: KN
     whiteSprite: {fileID: -1633045698, guid: 7e5d6b4687739cd42b49d3ca6964aa21, type: 3}
     blackSprite: {fileID: 1728957482, guid: 7e5d6b4687739cd42b49d3ca6964aa21, type: 3}
     eWhiteSprite: {fileID: -1801634108, guid: 7e5d6b4687739cd42b49d3ca6964aa21, type: 3}
     eBlackSprite: {fileID: 562655779, guid: 7e5d6b4687739cd42b49d3ca6964aa21, type: 3}
+    AttackAnimation: []
+    ClaimSacrificeAnimation: []
+    SacrificeAnimation: []
   - pieceIdentifier: B
     whiteSprite: {fileID: 1313479276, guid: 7e5d6b4687739cd42b49d3ca6964aa21, type: 3}
     blackSprite: {fileID: 119636099, guid: 7e5d6b4687739cd42b49d3ca6964aa21, type: 3}
     eWhiteSprite: {fileID: -253354760, guid: 7e5d6b4687739cd42b49d3ca6964aa21, type: 3}
     eBlackSprite: {fileID: 461264707, guid: 7e5d6b4687739cd42b49d3ca6964aa21, type: 3}
+    AttackAnimation: []
+    ClaimSacrificeAnimation: []
+    SacrificeAnimation: []
   - pieceIdentifier: K
     whiteSprite: {fileID: 284731043, guid: 7e5d6b4687739cd42b49d3ca6964aa21, type: 3}
     blackSprite: {fileID: -1321022009, guid: 7e5d6b4687739cd42b49d3ca6964aa21, type: 3}
     eWhiteSprite: {fileID: -3422082, guid: 7e5d6b4687739cd42b49d3ca6964aa21, type: 3}
     eBlackSprite: {fileID: 1148984814, guid: 7e5d6b4687739cd42b49d3ca6964aa21, type: 3}
+    AttackAnimation: []
+    ClaimSacrificeAnimation: []
+    SacrificeAnimation: []
   - pieceIdentifier: Q
     whiteSprite: {fileID: -1856870876, guid: 7e5d6b4687739cd42b49d3ca6964aa21, type: 3}
     blackSprite: {fileID: 1418502420, guid: 7e5d6b4687739cd42b49d3ca6964aa21, type: 3}
     eWhiteSprite: {fileID: 524843204, guid: 7e5d6b4687739cd42b49d3ca6964aa21, type: 3}
     eBlackSprite: {fileID: -1207948644, guid: 7e5d6b4687739cd42b49d3ca6964aa21, type: 3}
+    AttackAnimation: []
+    ClaimSacrificeAnimation: []
+    SacrificeAnimation: []
 --- !u!114 &673867454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3728,7 +3746,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1878369079
 MonoBehaviour:
   m_ObjectHideFlags: 0

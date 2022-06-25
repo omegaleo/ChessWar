@@ -43,8 +43,9 @@ public class BasePiece : EventTrigger
         ATTACKED // Will be handled by the Unity animation component
     }
 
-    public Animator animator;
-    public Image animatorImage;
+    private Animator animator;
+    private Animator overlayAnimator;
+    private Image animatorImage;
 
     public virtual void Setup(Color newColor, PieceSprite sprites)
     {
@@ -58,8 +59,9 @@ public class BasePiece : EventTrigger
         GetComponent<Image>().sprite = (color == Color.black) ? blackSprite : whiteSprite;
         RectTransform = GetComponent<RectTransform>();
 
-        animator = transform.GetChild(0).GetComponent<Animator>();
+        overlayAnimator = transform.GetChild(0).GetComponent<Animator>();
         animatorImage = transform.GetChild(0).GetComponent<Image>();
+        animator = GetComponent<Animator>();
     }
 
     /// <summary>
@@ -73,6 +75,7 @@ public class BasePiece : EventTrigger
     {
         // Call animator
         string animationName = "";
+        var animatorToUse = overlayAnimator;
         
         switch (type)
         {
@@ -86,21 +89,22 @@ public class BasePiece : EventTrigger
                 animationName = "Attacked";
                 break;
             case AnimationType.SACRIFICE:
-
+                animatorToUse = animator;
+                animationName = "Sacrifice";
                 break;
         }
         
-        animator.SetBool(animationName, true);
+        animatorToUse.SetBool(animationName, true);
 
-        while (!animator.AnimatorIsPlaying())
+        while (!animatorToUse.AnimatorIsPlaying())
         {
             yield return new WaitForSeconds(0.1f);
         }
         
         // Wait for animation to stop
-        yield return animator.WaitForAnimation();
+        yield return animatorToUse.WaitForAnimation();
 
-        animator.SetBool(animationName, false);
+        animatorToUse.SetBool(animationName, false);
         
         if (methodToCallWhenDone != null)
         {
@@ -259,13 +263,15 @@ public class BasePiece : EventTrigger
         {
             if (targetCell.currentPiece.color == color)
             {
-
                 if (!(GameManager.instance.botGame && isSecondaryPlayer))
                 {
                     SFXManager.instance.Play("soulSFX");
                 }
-                
-                ExecuteMovement(targetCell);
+
+                StartCoroutine(targetCell.currentPiece.ExecuteAnimation(AnimationType.SACRIFICE, () =>
+                {
+                    ExecuteMovement(targetCell);
+                }));
             }
             else
             {

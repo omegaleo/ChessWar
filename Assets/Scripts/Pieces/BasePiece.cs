@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -80,7 +81,9 @@ public class BasePiece : EventTrigger
         switch (type)
         {
             case AnimationType.CLAIM:
-
+                animationName = "ClaimSoul";
+                transform.GetChild(0).GetComponent<Image>().sprite =
+                    targetCell.currentPiece.GetComponent<Image>().sprite;
                 break;
             case AnimationType.ATTACK:
                 animationName = "Attack";
@@ -270,7 +273,11 @@ public class BasePiece : EventTrigger
 
                 StartCoroutine(targetCell.currentPiece.ExecuteAnimation(AnimationType.SACRIFICE, () =>
                 {
-                    ExecuteMovement(targetCell);
+                    targetCell.currentPiece.GetComponent<Image>().enabled = false;
+                    StartCoroutine(ExecuteAnimation(AnimationType.CLAIM, () =>
+                    {
+                        ExecuteMovement(targetCell);
+                    }));
                 }));
             }
             else

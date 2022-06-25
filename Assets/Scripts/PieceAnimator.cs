@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[ExecuteAlways]
 public class PieceAnimator : MonoBehaviour
 {
     [SerializeField][Range(0f, 1f)] private float disappearValue;

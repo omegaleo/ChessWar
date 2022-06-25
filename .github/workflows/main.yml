@@ -128,6 +128,8 @@ jobs:
           unityVersion: 2021.3.0f1
           targetPlatform: ${{ matrix.targetPlatform }}
           allowDirtyBuild: true
+          versioning: Tag
+          buildMethod: OmegaLeo.BuildScript.Build
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:

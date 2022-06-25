@@ -2848,7 +2848,7 @@ MonoBehaviour:
 
     The
     <color=#76428a><b>Evolved Knight</b></color> has the same movement as the normal
-    Bishop plus the added movement of 1 square vertically'
+    Knight plus the added movement of 1 square vertically'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ed0b8a226ded53441a85d522f9cdc6e1, type: 2}
   m_sharedMaterial: {fileID: 5981815099051842037, guid: ed0b8a226ded53441a85d522f9cdc6e1, type: 2}
@@ -5285,7 +5285,7 @@ MonoBehaviour:
 
 
     The
-    <color=#76428a><b>Evolved Rook</b></color> has the same movement as the normal
+    <color=#76428a><b>Evolved Bishop</b></color> has the same movement as the normal
     Bishop plus the added movement of 1 square horizontally'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ed0b8a226ded53441a85d522f9cdc6e1, type: 2}

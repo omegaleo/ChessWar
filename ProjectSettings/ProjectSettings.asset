@@ -233,7 +233,7 @@ PlayerSettings:
   iOSRequireARKit: 0
   iOSAutomaticallyDetectAndAddCapabilities: 1
   appleEnableProMotion: 0
-  shaderPrecisionModel: 0
+  shaderPrecisionModel: 1
   clonedFromGUID: c19f32bac17ee4170b3bf8a6a0333fb9
   templatePackageId: com.unity.template.universal-2d@1.1.2
   templateDefaultScene: Assets/Scenes/SampleScene.unity
@@ -369,8 +369,13 @@ PlayerSettings:
       m_Height: 36
       m_Kind: 0
       m_SubKind: 
-  m_BuildTargetBatching: []
-  m_BuildTargetGraphicsJobs: []
+  m_BuildTargetBatching:
+  - m_BuildTarget: WebGL
+    m_StaticBatching: 1
+    m_DynamicBatching: 1
+  m_BuildTargetGraphicsJobs:
+  - m_BuildTarget: WebGLSupport
+    m_GraphicsJobs: 1
   m_BuildTargetGraphicsJobMode: []
   m_BuildTargetGraphicsAPIs:
   - m_BuildTarget: WebGLSupport
@@ -387,7 +392,7 @@ PlayerSettings:
     tvOS: 1
   m_BuildTargetGroupLightmapEncodingQuality:
   - m_BuildTarget: WebGL
-    m_EncodingQuality: 2
+    m_EncodingQuality: 1
   m_BuildTargetGroupLightmapSettings: []
   m_BuildTargetNormalMapEncoding: []
   m_BuildTargetDefaultTextureCompressionFormat: []

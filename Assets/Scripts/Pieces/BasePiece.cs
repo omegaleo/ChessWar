@@ -41,7 +41,8 @@ public class BasePiece : EventTrigger
         CLAIM,
         ATTACK,
         SACRIFICE,
-        ATTACKED // Will be handled by the Unity animation component
+        ATTACKED,
+        TEAR
     }
 
     private Animator animator;
@@ -94,6 +95,9 @@ public class BasePiece : EventTrigger
             case AnimationType.SACRIFICE:
                 animatorToUse = animator;
                 animationName = "Sacrifice";
+                break;
+            case AnimationType.TEAR:
+                animationName = "Tear";
                 break;
         }
         
@@ -271,6 +275,7 @@ public class BasePiece : EventTrigger
                     SFXManager.instance.Play("soulSFX");
                 }
 
+                targetCell.currentPiece.ExecuteAnimation(AnimationType.TEAR);
                 StartCoroutine(targetCell.currentPiece.ExecuteAnimation(AnimationType.SACRIFICE, () =>
                 {
                     targetCell.currentPiece.GetComponent<Image>().enabled = false;
@@ -282,6 +287,7 @@ public class BasePiece : EventTrigger
             }
             else
             {
+                SFXManager.instance.Play("slashSFX");
                 StartCoroutine(targetCell.currentPiece.ExecuteAnimation(AnimationType.ATTACKED, () =>
                 {
                     ExecuteMovement(targetCell);

@@ -2231,6 +2231,8 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: cbbaa0ae731b53c47abc5b2e0c0cd53c, type: 3}
   - name: soulSFX
     clip: {fileID: 8300000, guid: e937f8e26e8779d489536b88179cfcc1, type: 3}
+  - name: slashSFX
+    clip: {fileID: 8300000, guid: a7d40ad2f3da57047a095f95669ba5cc, type: 3}
   mixer: {fileID: 24100000, guid: 0a2906d0ae6d1a04ea890600ae635d2b, type: 2}
 --- !u!1 &491519499
 GameObject:

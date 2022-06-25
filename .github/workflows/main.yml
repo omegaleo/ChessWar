@@ -31,7 +31,7 @@ jobs:
         channel:
           - StandaloneWindows64 # Build a Windows 64-bit standalone.
           - StandaloneLinux64 # Build a Linux 64-bit standalone.
-          - WebGL # WebGL.
+          #- WebGL # WebGL. Disabled for now due to issues with URP and building from here
     steps:
       - name: Download Artifacts
         uses: actions/download-artifact@v2
@@ -61,7 +61,7 @@ jobs:
         targetPlatform:
           - StandaloneWindows64 # Build a Windows 64-bit standalone.
           - StandaloneLinux64 # Build a Linux 64-bit standalone.
-          - WebGL # WebGL.
+          #- WebGL # WebGL. Disabled for now due to issues with URP and building from here
           - Android # Android APK
     steps:
       - name: Download Artifacts
@@ -92,7 +92,7 @@ jobs:
         targetPlatform:
           - StandaloneWindows64 # Build a Windows 64-bit standalone.
           - StandaloneLinux64 # Build a Linux 64-bit standalone.
-          - WebGL # WebGL.
+          #- WebGL # WebGL. Disabled for now due to issues with URP and building from here
           - Android # Android APK
     steps:
       - name: Checkout code

@@ -1,7 +1,3 @@
-Click & move - make more intuitive, maybe disable the snap to point
-Moves list
-More difference for King and Queen (Extra bulb on the queen's bottom maybe)
-Add information about the evolved forms to the panels
-Pawn can check/mate
-Try to implement puzzles instead of vs AI
-Enemy piece information on the left, player on the right
+Knight with different shape from pawns
+Rook with overall different shape
+Pixel art font

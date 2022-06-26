@@ -69,9 +69,16 @@ public class Pawn : BasePiece
                 {
                     return false;
                 }
+                
+                if (ValidChecking(piece))
+                {
+                    isChecking = true;
+                    CurrentCell.outlineImage.enabled = true;
+                }
             }
             
             highlightedCells.Add(Board.instance.allCells[targetX, targetY]);
+            
             return true;
         }
 

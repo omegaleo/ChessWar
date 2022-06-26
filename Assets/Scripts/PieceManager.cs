@@ -128,7 +128,7 @@ public class PieceManager : InstancedBehaviour<PieceManager>
     {
         foreach (BasePiece piece in pieces)
         {
-            piece.enabled = value;
+            piece.movementEnabled = value;
         }
     }
 
@@ -136,8 +136,7 @@ public class PieceManager : InstancedBehaviour<PieceManager>
     {
         King blackKing = GetKing(Color.black);
         King whiteKing = GetKing(Color.white);
-        bool gameOver = false;
-        
+
         Board.instance.ClearSelectedCells();
         
         // Check if Kings are checked and evolved to check if they can switch with a Rook
@@ -151,36 +150,12 @@ public class PieceManager : InstancedBehaviour<PieceManager>
             whiteKing.TrySwitchRook();
         }
         
-        // Check if CheckMate
-        if (blackKing.IsCheckMate())
-        {
-            gameOver = true;
-            if (player1Color == Color.black)
-            {
-                CheckmateScreen.instance.Open((GameManager.instance.botGame)? "DEFEAT":"WHITE WINS");
-            }
-            else
-            {
-                CheckmateScreen.instance.Open((GameManager.instance.botGame)? "VICTORY":"WHITE WINS");
-            }
-        }
-        else if (whiteKing.IsCheckMate())
-        {
-            gameOver = true;
-            if (player1Color == Color.white)
-            {
-                CheckmateScreen.instance.Open((GameManager.instance.botGame)? "DEFEAT":"BLACK WINS");
-            }
-            else
-            {
-                CheckmateScreen.instance.Open((GameManager.instance.botGame)? "VICTORY":"BLACK WINS");
-            }
-        }
-
+        bool gameOver = CheckGameOver(color);
+        
         if (!gameOver)
         {
             bool isBlackTurn = color == Color.white;
-        
+
             SetInteractive(whitePieces, !isBlackTurn);
             SetInteractive(blackPieces, isBlackTurn);
 
@@ -192,11 +167,47 @@ public class PieceManager : InstancedBehaviour<PieceManager>
                 piece.enabled = isPartOfTeam;
             }
 
-            if (((isBlackTurn && player2Color == Color.black) || (!isBlackTurn && player2Color == Color.white)) && GameManager.instance.botGame)
+            if (((isBlackTurn && player2Color == Color.black) || (!isBlackTurn && player2Color == Color.white)) &&
+                GameManager.instance.botGame)
             {
                 BotAI.Move(player2Color);
             }
         }
+    }
+
+    public bool CheckGameOver(Color color)
+    {
+        bool gameOver = false;
+        King blackKing = GetKing(Color.black);
+        King whiteKing = GetKing(Color.white);
+        
+        // Check if CheckMate
+        if (blackKing.IsCheckMate())
+        {
+            gameOver = true;
+            if (player1Color == Color.black)
+            {
+                CheckmateScreen.instance.Open((GameManager.instance.botGame) ? "DEFEAT" : "WHITE WINS");
+            }
+            else
+            {
+                CheckmateScreen.instance.Open((GameManager.instance.botGame) ? "VICTORY" : "WHITE WINS");
+            }
+        }
+        else if (whiteKing.IsCheckMate())
+        {
+            gameOver = true;
+            if (player1Color == Color.white)
+            {
+                CheckmateScreen.instance.Open((GameManager.instance.botGame) ? "DEFEAT" : "BLACK WINS");
+            }
+            else
+            {
+                CheckmateScreen.instance.Open((GameManager.instance.botGame) ? "VICTORY" : "BLACK WINS");
+            }
+        }
+
+        return gameOver;
     }
 
     public void ResetGame()

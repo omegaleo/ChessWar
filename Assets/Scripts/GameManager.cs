@@ -10,6 +10,15 @@ public class GameManager : InstancedBehaviour<GameManager>
     public bool botGame;
 
     [SerializeField] private Texture2D cursorTexture;
+
+    public enum Difficulty
+    {
+        Easy,
+        Normal,
+        Hard
+    }
+
+    public Difficulty difficulty = Difficulty.Normal;
     
     protected override void Awake()
     {

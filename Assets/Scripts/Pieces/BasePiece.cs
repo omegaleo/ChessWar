@@ -49,6 +49,8 @@ public class BasePiece : EventTrigger
     private Animator overlayAnimator;
     private Image animatorImage;
 
+    public bool movementEnabled;
+
     public virtual void Setup(Color newColor, PieceSprite sprites)
     {
         color = newColor;
@@ -189,7 +191,7 @@ public class BasePiece : EventTrigger
 
     public bool ValidChecking(BasePiece piece)
     {
-        return piece.GetType() == typeof(King) && piece.color != color && this.GetType() != typeof(King) && this.GetType() != typeof(Pawn);
+        return piece.GetType() == typeof(King) && piece.color != color && this.GetType() != typeof(King);
     }
 
     public void CreateCellPath(int xDir, int yDir, int movement)
@@ -347,6 +349,8 @@ public class BasePiece : EventTrigger
         {
             x.outlineImage.enabled = false;
         });
+
+        PieceManager.instance.CheckGameOver(color);
         
         if (!moveTwice || move > 1)
         {
@@ -391,6 +395,11 @@ public class BasePiece : EventTrigger
     public override void OnBeginDrag(PointerEventData eventData)
     {
         base.OnBeginDrag(eventData);
+        
+        if (!movementEnabled)
+        {
+            return;
+        }
         
         CheckPathing();
         

@@ -17,7 +17,33 @@ public static class BotAI
 
     public static void Move(Color color)
     {
-        bool sacrifice = new System.Random().Next(0, 100) <= 10;
+        var r = new System.Random();
+        if (GameManager.instance.difficulty == GameManager.Difficulty.Easy)
+        {
+            bool randomMove = r.Next(0, 100) <= 40;
+
+            if (randomMove)
+            {
+                RandomMove(color);
+            }
+        }
+
+        int percentageToSacrifice = 0;
+
+        switch (GameManager.instance.difficulty)
+        {
+            case GameManager.Difficulty.Easy:
+                percentageToSacrifice = 2;
+                break;
+            case GameManager.Difficulty.Normal:
+                percentageToSacrifice = 5;
+                break;
+            case GameManager.Difficulty.Hard:
+                percentageToSacrifice = 15;
+                break;
+        }
+        
+        bool sacrifice =  r.Next(0, 100) <= percentageToSacrifice;
         
         var allPossibleMoves = PieceManager.instance.GetAllPossibleMoves(color).ToList();
         var pieces = PieceManager.instance.GetPieces(color);
@@ -82,15 +108,12 @@ public static class BotAI
         return value * multiplier;
     }
     
-    /*void BotMove()
+    private static void RandomMove(Color color)
     {
-        // For now, get a random piece that can move and move it to a random position
-        var teamPieces = (player2Color == Color.black) ? blackPieces : whitePieces;
-        
-        var pieces = teamPieces.Where(x => x.IsAlive()).ToList();
-
-        pieces.ForEach(x => x.CheckPathing());
-        var piece = pieces.Where(x => x.highlightedCells.Any()).ToList().Random();
+        var allPossibleMoves = PieceManager.instance.GetAllPossibleMoves(color).ToList();
+        var pieces = PieceManager.instance.GetPieces(color);
+        var bestMove = allPossibleMoves.Random();
+        var piece = pieces.FirstOrDefault(x => x.highlightedCells.Any(x => x == bestMove));
 
         if (piece != null)
         {
@@ -98,8 +121,8 @@ public static class BotAI
             piece.Move();
         }
 
-        SwitchSides(player2Color);
-    }*/
+        PieceManager.instance.SwitchSides(color);
+    }
 }
 
 public class PieceValue

@@ -158,8 +158,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 215, y: -243.27249}
-  m_SizeDelta: {x: 410, y: 466.54498}
+  m_AnchoredPosition: {x: 175, y: -229.4975}
+  m_SizeDelta: {x: 330, y: 438.99496}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &116309075
 MonoBehaviour:
@@ -1214,8 +1214,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -175, y: 0}
-  m_SizeDelta: {x: 350, y: 0}
+  m_AnchoredPosition: {x: -182.5, y: 0}
+  m_SizeDelta: {x: 350, y: -25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &293840714
 MonoBehaviour:
@@ -1706,8 +1706,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 215, y: -688.27246}
-  m_SizeDelta: {x: 410, y: 403.455}
+  m_AnchoredPosition: {x: 175, y: -674.49744}
+  m_SizeDelta: {x: 330, y: 431.00497}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &437442058
 MonoBehaviour:
@@ -1729,10 +1729,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Pawn
+  m_text: 'Pawn
+
+    <align=left>Test'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e9a8c761b358bf44f9cda50569a268e0, type: 2}
-  m_sharedMaterial: {fileID: 5981815099051842037, guid: ed0b8a226ded53441a85d522f9cdc6e1, type: 2}
+  m_sharedMaterial: {fileID: 246143435287901796, guid: e9a8c761b358bf44f9cda50569a268e0, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1792,10 +1794,10 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 20, y: 0, z: 20, w: 20}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &437442059
@@ -2499,8 +2501,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 215, y: -243.27249}
-  m_SizeDelta: {x: 410, y: 466.54498}
+  m_AnchoredPosition: {x: 175, y: -229.4975}
+  m_SizeDelta: {x: 330, y: 438.99496}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &812267272
 MonoBehaviour:
@@ -2886,8 +2888,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 175, y: 0}
-  m_SizeDelta: {x: 350, y: 0}
+  m_AnchoredPosition: {x: 182.5, y: 0}
+  m_SizeDelta: {x: 350, y: -25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1352824873
 MonoBehaviour:
@@ -3851,8 +3853,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 215, y: -688.27246}
-  m_SizeDelta: {x: 410, y: 403.455}
+  m_AnchoredPosition: {x: 175, y: -674.49744}
+  m_SizeDelta: {x: 330, y: 431.00497}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1918973068
 MonoBehaviour:
@@ -3874,10 +3876,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Pawn
+  m_text: 'Pawn
+
+    <align=left>Test'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e9a8c761b358bf44f9cda50569a268e0, type: 2}
-  m_sharedMaterial: {fileID: 5981815099051842037, guid: ed0b8a226ded53441a85d522f9cdc6e1, type: 2}
+  m_sharedMaterial: {fileID: 246143435287901796, guid: e9a8c761b358bf44f9cda50569a268e0, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3937,10 +3941,10 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 20, y: 0, z: 20, w: 20}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1918973069

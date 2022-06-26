@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Icons
   m_EditorClassIdentifier: 
   hashCode: 83117176
-  material: {fileID: 9095146845602255721}
+  material: {fileID: 5085627736720636731}
   materialHashCode: 0
   m_Version: 1.1.0
   m_FaceInfo:
@@ -51,6 +51,12 @@ MonoBehaviour:
     m_Scale: 1
     m_Name: Icons_1
     m_HashCode: 320288822
+  - m_ElementType: 2
+    m_Unicode: 65534
+    m_GlyphIndex: 2
+    m_Scale: 1
+    m_Name: Icons_2
+    m_HashCode: 320288821
   m_SpriteGlyphTable:
   - m_Index: 0
     m_Metrics:
@@ -82,9 +88,24 @@ MonoBehaviour:
     m_Scale: 1
     m_AtlasIndex: 0
     sprite: {fileID: -1926928525, guid: da10414876ada2e47b9c5bf200a54dcc, type: 3}
+  - m_Index: 2
+    m_Metrics:
+      m_Width: 48
+      m_Height: 48
+      m_HorizontalBearingX: -24
+      m_HorizontalBearingY: 24
+      m_HorizontalAdvance: 48
+    m_GlyphRect:
+      m_X: 96
+      m_Y: 0
+      m_Width: 48
+      m_Height: 48
+    m_Scale: 1
+    m_AtlasIndex: 0
+    sprite: {fileID: 271848359, guid: da10414876ada2e47b9c5bf200a54dcc, type: 3}
   spriteInfoList: []
   fallbackSpriteAssets: []
---- !u!21 &9095146845602255721
+--- !u!21 &5085627736720636731
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 1

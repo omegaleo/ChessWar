@@ -67,14 +67,19 @@ public static class BotAI
 
     private static int GetValue(Cell cell, int multiplier)
     {
-        int? value = 0;
+        int value = 0;
 
         if (cell.currentPiece != null)
         {
-            value = values.FirstOrDefault(x => x.type == cell.currentPiece.GetType())?.value;
+            var pieceValue = values.FirstOrDefault(x => x.type == cell.currentPiece.GetType());
+
+            if (pieceValue != null)
+            {
+                value = (cell.currentPiece.evolved) ? pieceValue.evolvedValue : pieceValue.value;
+            }
         }
         
-        return value * multiplier ?? 0;
+        return value * multiplier;
     }
     
     /*void BotMove()

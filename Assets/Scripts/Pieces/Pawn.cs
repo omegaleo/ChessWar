@@ -75,6 +75,11 @@ public class Pawn : BasePiece
 
     public override void CheckPathing()
     {
+        if (PieceManager.instance.EvolvedQueenSecondMove(color))
+        {
+            return;
+        }
+        
         highlightedCells.Clear();
         if (evolved)
         {

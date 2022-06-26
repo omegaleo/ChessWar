@@ -215,6 +215,11 @@ public class BasePiece : EventTrigger
 
     public virtual void CheckPathing()
     {
+        if (PieceManager.instance.EvolvedQueenSecondMove(color) && (GetType() != typeof(Queen) || !evolved))
+        {
+            return;
+        }
+        
         isChecking = false;
         CurrentCell.outlineImage.enabled = false;
         highlightedCells.Clear();
@@ -223,7 +228,7 @@ public class BasePiece : EventTrigger
         {
             return;
         }
-        
+
         // Horizontal
         CreateCellPath(1, 0, movement.x);
         CreateCellPath(-1, 0, movement.x);
@@ -306,8 +311,21 @@ public class BasePiece : EventTrigger
     {
         if (cell == null)
             return;
-        
+
         SFXManager.instance.Play("pieceMoveSFX");
+
+        CellState state = CellState.None;
+        state = Board.instance.ValidateCell(targetCell.boardPosition.x, targetCell.boardPosition.y, this);
+
+        if (state == CellState.Friendly)
+        {
+            // Sacrifice a piece
+            var piece = targetCell.currentPiece;
+        
+            this.level += piece.level;
+            CheckEvolved();
+        }
+        
         
         cell.RemovePiece();
 
@@ -319,8 +337,7 @@ public class BasePiece : EventTrigger
         transform.position = CurrentCell.transform.position;
 
         // Check if any of the kings is in check
-        PieceManager.instance.UpdateIsChecked(Color.white);
-        PieceManager.instance.UpdateIsChecked(Color.black);
+        PieceManager.instance.UpdatePaths();
 
         targetCell = null;
         
@@ -438,27 +455,7 @@ public class BasePiece : EventTrigger
         {
             return;
         }
-        
-        CellState state = CellState.None;
-        state = Board.instance.ValidateCell(targetCell.boardPosition.x, targetCell.boardPosition.y, this);
 
-        if (state == CellState.Friendly)
-        {
-            // Sacrifice a piece
-            var piece = targetCell.currentPiece;
-        
-            if (IsValidMovement(piece))
-            {
-                this.level += piece.level;
-                CheckEvolved();
-            }
-            else
-            {
-                transform.position = CurrentCell.gameObject.transform.position;
-                return;
-            }
-        }
-        
         Move();
     }
 

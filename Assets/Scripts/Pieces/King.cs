@@ -132,7 +132,7 @@ public class King : BasePiece
                     CurrentCell.checkedImage.enabled = false;
                     rook.CurrentCell.checkedImage.enabled = false;
                     
-                    PieceManager.instance.UpdateIsChecked(color);
+                    PieceManager.instance.UpdatePaths();
                     IsChecked();
                 }
             }

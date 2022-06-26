@@ -194,30 +194,11 @@ public class PieceManager : InstancedBehaviour<PieceManager>
 
             if (((isBlackTurn && player2Color == Color.black) || (!isBlackTurn && player2Color == Color.white)) && GameManager.instance.botGame)
             {
-                BotMove();
+                BotAI.Move(player2Color);
             }
         }
     }
 
-    void BotMove()
-    {
-        // For now, get a random piece that can move and move it to a random position
-        var teamPieces = (player2Color == Color.black) ? blackPieces : whitePieces;
-        
-        var pieces = teamPieces.Where(x => x.IsAlive()).ToList();
-
-        pieces.ForEach(x => x.CheckPathing());
-        var piece = pieces.Where(x => x.highlightedCells.Any()).ToList().Random();
-
-        if (piece != null)
-        {
-            piece.targetCell = piece.highlightedCells.Random();
-            piece.Move();
-        }
-
-        SwitchSides(player2Color);
-    }
-    
     public void ResetGame()
     {
         foreach (BasePiece piece in promotedPieces)
@@ -287,16 +268,10 @@ public class PieceManager : InstancedBehaviour<PieceManager>
         promotedPieces.Add(promotedPiece);
     }
 
-    public void UpdateIsChecked(Color teamColor)
+    public void UpdatePaths()
     {
-        if (teamColor == Color.black)
-        {
-            whitePieces.ForEach(x => x.CheckPathing());
-        }
-        else
-        {
-            blackPieces.ForEach(x => x.CheckPathing());
-        }
+        whitePieces.ForEach(x => x.CheckPathing());
+        blackPieces.ForEach(x => x.CheckPathing());
     }
 
     private List<Cell> IterateCells(int xPos, int yPos, int xIncrement, int yIncrement, int count)
@@ -343,8 +318,8 @@ public class PieceManager : InstancedBehaviour<PieceManager>
     public IEnumerable<Cell> GetCheckingCells(Color color)
     {
         return (color == Color.black)
-            ? whitePieces.Where(x => x.isChecking && x.IsAlive() && x.GetType() != typeof(Pawn)).SelectMany(x => CheckingCellPath(x.CurrentCell, GetKing(Color.black)))
-            : blackPieces.Where(x => x.isChecking && x.IsAlive() && x.GetType() != typeof(Pawn)).SelectMany(x => CheckingCellPath(x.CurrentCell, GetKing(Color.white)));
+            ? whitePieces.Where(x => x.isChecking && x.IsAlive()).SelectMany(x => CheckingCellPath(x.CurrentCell, GetKing(Color.black)))
+            : blackPieces.Where(x => x.isChecking && x.IsAlive()).SelectMany(x => CheckingCellPath(x.CurrentCell, GetKing(Color.white)));
     }
     
     public bool CanCheckmateBePrevented(Color teamColor)
@@ -356,6 +331,20 @@ public class PieceManager : InstancedBehaviour<PieceManager>
         var countInterceptions = movements.Count(x => checkingCells.Contains(x));
 
         return countInterceptions > 0;
+    }
+
+    public IEnumerable<Cell> GetAllPossibleMoves(Color color)
+    {
+        UpdatePaths();
+        
+        return GetPieces(color).SelectMany(x => x.highlightedCells);
+    }
+
+    public IEnumerable<BasePiece> GetPieces(Color color)
+    {
+        return (color == Color.black)
+            ? blackPieces.Where(x => x.IsAlive())
+            : whitePieces.Where(x => x.IsAlive());
     }
 
     /// <summary>
@@ -419,5 +408,17 @@ public class PieceManager : InstancedBehaviour<PieceManager>
         {
             return whitePieces.Where(x => x.GetType() == typeof(Rook) && x.IsAlive()).ToList();
         }
+    }
+
+    /// <summary>
+    /// Used to evaluate if there's an evolved queen and she's going for the 2nd move
+    /// </summary>
+    /// <param name="teamColor"></param>
+    /// <returns></returns>
+    public bool EvolvedQueenSecondMove(Color teamColor)
+    {
+        return (teamColor == Color.black)
+            ? blackPieces.Any(x => x.GetType() == typeof(Queen) && x.evolved && x.move < 2)
+            : whitePieces.Any(x => x.GetType() == typeof(Queen) && x.evolved && x.move < 2);
     }
 }

@@ -279,10 +279,12 @@ public class BasePiece : EventTrigger
                 StartCoroutine(targetCell.currentPiece.ExecuteAnimation(AnimationType.SACRIFICE, () =>
                 {
                     targetCell.currentPiece.GetComponent<Image>().enabled = false;
-                    StartCoroutine(ExecuteAnimation(AnimationType.CLAIM, () =>
+                    ExecuteMovement(targetCell);
+                    
+                    /*StartCoroutine(ExecuteAnimation(AnimationType.CLAIM, () =>
                     {
                         ExecuteMovement(targetCell);
-                    }));
+                    }));*///Disabled for now
                 }));
             }
             else
@@ -382,6 +384,10 @@ public class BasePiece : EventTrigger
         base.OnDrag(eventData);
         
         var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mousePos.z += Camera.main.nearClipPlane;
+
+        transform.position = mousePos;
+        
         targetCell = null;
         
         foreach (Cell cell in highlightedCells)
@@ -389,7 +395,7 @@ public class BasePiece : EventTrigger
             if (RectTransformUtility.RectangleContainsScreenPoint(cell.rectTransform, mousePos))
             {
                 targetCell = cell;
-                transform.position = targetCell.gameObject.transform.position;
+                //transform.position = targetCell.gameObject.transform.position; // Code used to snap the piece's position to the cell
                 if (targetCell.currentPiece != null)
                 {
                     InformationPanelManager.instance.OpenTarget(targetCell.currentPiece);

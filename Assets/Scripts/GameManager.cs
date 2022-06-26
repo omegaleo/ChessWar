@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 public class GameManager : InstancedBehaviour<GameManager>
 {
     public bool botGame;
+
+    [SerializeField] private Texture2D cursorTexture;
     
     protected override void Awake()
     {
@@ -20,6 +22,11 @@ public class GameManager : InstancedBehaviour<GameManager>
         {
             Destroy(this.gameObject);
         }
+    }
+
+    private void Start()
+    {
+        Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.Auto);
     }
 
     public void StartGame(bool botGame)

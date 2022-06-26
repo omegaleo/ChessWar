@@ -215,6 +215,11 @@ public class BasePiece : EventTrigger
 
     public virtual void CheckPathing()
     {
+        if (PieceManager.instance.EvolvedQueenSecondMove(color) && (GetType() != typeof(Queen) || !evolved))
+        {
+            return;
+        }
+        
         isChecking = false;
         CurrentCell.outlineImage.enabled = false;
         highlightedCells.Clear();
@@ -223,7 +228,7 @@ public class BasePiece : EventTrigger
         {
             return;
         }
-        
+
         // Horizontal
         CreateCellPath(1, 0, movement.x);
         CreateCellPath(-1, 0, movement.x);

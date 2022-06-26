@@ -30,7 +30,6 @@ public class BasePieceEditor : Editor
         var piece = (BasePiece) target;
         
         EditorGUILayout.LabelField($"Level {piece.level}");
-        
-        base.OnInspectorGUI();
+        //base.OnInspectorGUI();
     }
 }

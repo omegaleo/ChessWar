@@ -36,6 +36,11 @@ public class GameManager : InstancedBehaviour<GameManager>
     private void Start()
     {
         Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.Auto);
+
+        if (PlayerPrefs.HasKey("Difficulty"))
+        {
+            difficulty = (Difficulty) PlayerPrefs.GetInt("Difficulty");
+        }
     }
 
     public void StartGame(bool botGame)

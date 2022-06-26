@@ -24,5 +24,7 @@ public class OptionsMenu : InstancedBehaviour<OptionsMenu>
     public void SetDifficulty()
     {
         GameManager.instance.difficulty = (GameManager.Difficulty) difficultyDropdown.value;
+        PlayerPrefs.SetInt("Difficulty",difficultyDropdown.value);
+        PlayerPrefs.Save();
     }
 }

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: ad32b6ec5b295b945917d958687b6263
+guid: daf3185626023404d8915b14c3a89976
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Mystery Font
+  - ChessWar font
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

@@ -219,6 +219,8 @@ public class BasePiece : EventTrigger
     {
         highlightedCells.Clear();
         
+        Board.instance.ResetCellOutlines();
+        
         if (PieceManager.instance.EvolvedQueenSecondMove(color) && (GetType() != typeof(Queen) || !evolved))
         {
             return;

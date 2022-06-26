@@ -22,6 +22,11 @@ public class Cell : MonoBehaviour
         rectTransform = GetComponent<RectTransform>();
     }
 
+    public void ResetOutline()
+    {
+        outlineImage.enabled = false;
+    }
+    
     public void RemovePiece()
     {
         if (currentPiece != null)

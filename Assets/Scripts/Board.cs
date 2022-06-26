@@ -82,6 +82,14 @@ public class Board : InstancedBehaviour<Board>
         return CellState.Free;
     }
 
+    public void ResetCellOutlines()
+    {
+        foreach (Cell cell in allCells)
+        {
+            cell.ResetOutline();
+        }
+    }
+
     public void ClearSelectedCells()
     {
         foreach (var cell in allCells)

@@ -83,7 +83,7 @@ public static class BotAI
         return (IsSameColor(color, cell) 
             ? (piece.evolved) 
                 ? -1 : 1
-            : 1);
+            : (piece.evolved) ? 3 : 2);
     }
 
     private static bool IsSameColor(Color color, Cell cell)

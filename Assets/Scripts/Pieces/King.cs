@@ -139,6 +139,22 @@ public class King : BasePiece
         }
     }
 
+    public override string GetDescription()
+    {
+        string description = "";
+
+        if (evolved)
+        {
+            description = $"<b><color=#76428a>Evolved upgrade</color></b>{Environment.NewLine}Switches with the nearest rook when checked.";
+        }
+        else
+        {
+            description = $"{Environment.NewLine}Evolves when there are at least three evolved pieces.{Environment.NewLine}{Environment.NewLine}<align=left>Once it has evolved it will switch with the nearest rook when checked";
+        }
+
+        return description;
+    }
+    
     private BasePiece GetClosestRook(List<BasePiece> rooks)
     {
         var closestRook = rooks.FirstOrDefault();

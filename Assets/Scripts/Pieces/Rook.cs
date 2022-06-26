@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Rook : BasePiece
 {
@@ -60,5 +61,21 @@ public class Rook : BasePiece
         newPosition.x += offset;
 
         return Board.instance.allCells[newPosition.x, newPosition.y];
+    }
+    
+    public override string GetDescription()
+    {
+        string description = base.GetDescription();
+
+        if (evolved)
+        {
+            description = $"<b><color=#76428a>Evolved upgrade</color></b>{Environment.NewLine}Can move over pieces of the same color";
+        }
+        else
+        {
+            description += Environment.NewLine + "<align=left>Once it has evolved it can move over pieces of the same color";
+        }
+
+        return description;
     }
 }

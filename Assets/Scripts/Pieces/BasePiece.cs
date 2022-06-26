@@ -411,6 +411,11 @@ public class BasePiece : EventTrigger
     
     public override void OnDrag(PointerEventData eventData)
     {
+        if (color != PieceManager.instance.currentColor)
+        {
+            return;
+        }
+        
         base.OnDrag(eventData);
         
         var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);

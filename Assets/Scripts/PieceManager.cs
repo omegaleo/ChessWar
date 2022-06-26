@@ -19,6 +19,7 @@ public class PieceManager : InstancedBehaviour<PieceManager>
 
     public Color player1Color = Color.white;
     public Color player2Color = Color.black;
+    public Color currentColor;
     
     private string[] pieceOrder = new string[16]
     {
@@ -156,6 +157,8 @@ public class PieceManager : InstancedBehaviour<PieceManager>
         {
             bool isBlackTurn = color == Color.white;
 
+            currentColor = (isBlackTurn) ? Color.black : Color.white;
+            
             SetInteractive(whitePieces, !isBlackTurn);
             SetInteractive(blackPieces, isBlackTurn);
 

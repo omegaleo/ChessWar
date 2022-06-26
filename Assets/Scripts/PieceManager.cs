@@ -432,7 +432,7 @@ public class PieceManager : InstancedBehaviour<PieceManager>
     public bool EvolvedQueenSecondMove(Color teamColor)
     {
         return (teamColor == Color.black)
-            ? blackPieces.Any(x => x.GetType() == typeof(Queen) && x.evolved && x.move < 2)
-            : whitePieces.Any(x => x.GetType() == typeof(Queen) && x.evolved && x.move < 2);
+            ? blackPieces.Any(x => x.GetType() == typeof(Queen) && x.evolved && x.move == 1)
+            : whitePieces.Any(x => x.GetType() == typeof(Queen) && x.evolved && x.move == 1);
     }
 }

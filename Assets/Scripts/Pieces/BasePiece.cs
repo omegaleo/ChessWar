@@ -150,7 +150,7 @@ public class BasePiece : EventTrigger
             CellState state = CellState.None;
             state = Board.instance.ValidateCell(currentX, currentY, this);
 
-            if (state == CellState.Enemy || state == CellState.Free || state == CellState.Friendly)
+            if (state != CellState.OutOfBounds)
             {
                 var possibleTarget = Board.instance.allCells[currentX, currentY];
 
@@ -217,15 +217,16 @@ public class BasePiece : EventTrigger
 
     public virtual void CheckPathing()
     {
+        highlightedCells.Clear();
+        
         if (PieceManager.instance.EvolvedQueenSecondMove(color) && (GetType() != typeof(Queen) || !evolved))
         {
             return;
         }
-        
+
         isChecking = false;
         CurrentCell.outlineImage.enabled = false;
-        highlightedCells.Clear();
-        
+
         if (!IsAlive())
         {
             return;

@@ -120,8 +120,6 @@ public static class BotAI
             piece.targetCell = piece.highlightedCells.Random();
             piece.Move();
         }
-
-        PieceManager.instance.SwitchSides(color);
     }
 }
 

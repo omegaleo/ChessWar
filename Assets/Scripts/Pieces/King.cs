@@ -51,7 +51,7 @@ public class King : BasePiece
 
     public override bool IsValidMovement(BasePiece piece)
     {
-        return piece == null;
+        return piece.GetType() != typeof(King) && piece.color != color;
     }
 
     public bool IsChecked()

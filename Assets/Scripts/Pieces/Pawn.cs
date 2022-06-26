@@ -49,7 +49,7 @@ public class Pawn : BasePiece
         return description;
     }
     
-    private bool MatchesState(int targetX, int targetY, CellState targetState)
+    private bool MatchesState(int targetX, int targetY, CellState targetState, bool cantCatch = false)
     {
         CellState state = Board.instance.ValidateCell(targetX, targetY, this);
 
@@ -60,7 +60,12 @@ public class Pawn : BasePiece
             if (cell != null && cell.currentPiece != null)
             {
                 var piece = cell.currentPiece;
-                if (piece.GetType() == typeof(King))
+                if (!IsValidMovement(piece))
+                {
+                    return false;
+                }
+
+                if (cantCatch)
                 {
                     return false;
                 }
@@ -102,11 +107,11 @@ public class Pawn : BasePiece
             // Top Right Ally
             MatchesState(currentX + movement.z, currentY + movement.z, CellState.Friendly);
 
-            if (MatchesState(currentX, currentY + movement.y, CellState.Free))
+            if (MatchesState(currentX, currentY + movement.y, CellState.Free, true))
             {
                 if (isFirstMove)
                 {
-                    MatchesState(currentX, currentY + (movement.y * 2), CellState.Free);
+                    MatchesState(currentX, currentY + (movement.y * 2), CellState.Free, true);
                 }
             }
             

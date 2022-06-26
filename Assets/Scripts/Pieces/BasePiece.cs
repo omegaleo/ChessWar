@@ -353,6 +353,10 @@ public class BasePiece : EventTrigger
             move = 0;
             PieceManager.instance.SwitchSides(color);
         }
+        else if (GameManager.instance.botGame && moveTwice && color == PieceManager.instance.player2Color)
+        {
+            BotAI.Move(color);
+        }
     }
 
     #endregion

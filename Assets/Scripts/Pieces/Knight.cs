@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Knight : BasePiece
 {
@@ -42,6 +43,22 @@ public class Knight : BasePiece
         CreateCellPath(-1);
     }
 
+    public override string GetDescription()
+    {
+        string description = base.GetDescription();
+
+        if (evolved)
+        {
+            description = $"<b><color=#76428a>Evolved upgrade</color></b>{Environment.NewLine}Can move one square vertically";
+        }
+        else
+        {
+            description += Environment.NewLine + "<align=left>Once it has evolved it can move one square vertically";
+        }
+
+        return description;
+    }
+    
     private void MatchesState(int targetX, int targetY)
     {
         CellState state = Board.instance.ValidateCell(targetX, targetY, this);

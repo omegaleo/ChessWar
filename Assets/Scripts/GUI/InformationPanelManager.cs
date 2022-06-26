@@ -25,15 +25,15 @@ public class InformationPanelManager : InstancedBehaviour<InformationPanelManage
             (piece.evolved) ? piece.eBlackSprite : piece.blackSprite :
             (piece.evolved) ? piece.eWhiteSprite : piece.whiteSprite;
 
-        currentDescription.text = $"<color=#76428a>{piece.GetType().FullName}</color>{Environment.NewLine}<size=24>Level {piece.level}</size>";
+        currentDescription.text = GetDescription(piece);
     }
 
     public void CloseCurrent()
     {
         currentPanel.SetActive(false);
     }
-    
-    public void OpenTarget(BasePiece piece)
+
+    public void OpenTarget(BasePiece piece, bool isSacrifice = false)
     {
         targetPanel.SetActive(true);
         
@@ -41,11 +41,19 @@ public class InformationPanelManager : InstancedBehaviour<InformationPanelManage
             (piece.evolved) ? piece.eBlackSprite : piece.blackSprite :
             (piece.evolved) ? piece.eWhiteSprite : piece.whiteSprite;
 
-        targetDescription.text = $"<color=#76428a>{piece.GetType().FullName}</color>{Environment.NewLine}<size=24>Level {piece.level}</size>";
+        targetDescription.text = GetDescription(piece, isSacrifice);
     }
 
     public void CloseTarget()
     {
         targetPanel.SetActive(false);
+    }
+
+    private string GetDescription(BasePiece piece, bool isSacrifice = false)
+    {
+        string sacrificeText = (isSacrifice) ? "<color=#76428a> -Sacrifice- </color>" + Environment.NewLine: "";
+        string evolvedText = (piece.evolved) ? "Evolved " : "";
+        return
+            $"<color=#76428a>{evolvedText}{piece.GetType().FullName}</color>{Environment.NewLine}{sacrificeText}<size=24>Level {piece.level}{Environment.NewLine}{Environment.NewLine}{piece.GetDescription()}</size>";
     }
 }

@@ -398,14 +398,30 @@ public class BasePiece : EventTrigger
                 //transform.position = targetCell.gameObject.transform.position; // Code used to snap the piece's position to the cell
                 if (targetCell.currentPiece != null)
                 {
-                    InformationPanelManager.instance.OpenTarget(targetCell.currentPiece);
+                    InformationPanelManager.instance.OpenTarget(targetCell.currentPiece, targetCell.currentPiece.color == color);
                 }
                 
                 break;
             }
         }
     }
-    
+
+    public virtual string GetDescription()
+    {
+        string description = "";
+        
+        if (evolved)
+        {
+            
+        }
+        else
+        {
+            description = $"{Environment.NewLine}Evolves at level {evolveLevel}{Environment.NewLine}";
+        }
+
+        return description;
+    }
+
     public override void OnEndDrag(PointerEventData eventData)
     {
         base.OnEndDrag(eventData);

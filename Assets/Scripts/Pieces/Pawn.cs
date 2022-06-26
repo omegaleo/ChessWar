@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -32,6 +33,22 @@ public class Pawn : BasePiece
         CheckForPromotion();
     }
 
+    public override string GetDescription()
+    {
+        string description = base.GetDescription();
+
+        if (evolved)
+        {
+            description = $"<b><color=#76428a>Evolved upgrade</color></b>{Environment.NewLine}Can move one square in any direction";
+        }
+        else
+        {
+            description += Environment.NewLine + "<align=left>Once it has evolved it can move one square in any direction";
+        }
+
+        return description;
+    }
+    
     private bool MatchesState(int targetX, int targetY, CellState targetState)
     {
         CellState state = Board.instance.ValidateCell(targetX, targetY, this);

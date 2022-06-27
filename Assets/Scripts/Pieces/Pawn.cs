@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class Pawn : BasePiece
 {
-    private bool isFirstMove = true;
-    
     public Pawn()
     {
         level = 1;

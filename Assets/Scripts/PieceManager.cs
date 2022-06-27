@@ -88,6 +88,8 @@ public class PieceManager : InstancedBehaviour<PieceManager>
             blackPiece.level = piece.startLevel;
             blackPiece.CheckEvolved();
 
+            blackPiece.isFirstMove = piece.firstMove;
+            
             if (blackPiece.GetType() == typeof(King))
             {
                 kings.Add(blackPiece);
@@ -103,6 +105,8 @@ public class PieceManager : InstancedBehaviour<PieceManager>
 
             whitePiece.level = piece.startLevel;
             whitePiece.CheckEvolved();
+            
+            whitePiece.isFirstMove = piece.firstMove;
             
             if (whitePiece.GetType() == typeof(King))
             {

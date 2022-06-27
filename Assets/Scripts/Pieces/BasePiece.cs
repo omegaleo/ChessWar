@@ -35,6 +35,7 @@ public class BasePiece : EventTrigger
     public bool isChecking = false;
     public bool moveTwice = false;
     public int move = 0;
+    public bool isFirstMove = true;
 
     public enum AnimationType
     {

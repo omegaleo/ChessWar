@@ -21,4 +21,5 @@ public class PuzzlePiecePosition
     public int y;
     public string pieceType;
     public int startLevel;
+    public bool firstMove = false; // Normally in puzzles pieces aren't on their first move
 }

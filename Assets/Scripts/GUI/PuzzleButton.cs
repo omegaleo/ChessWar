@@ -35,6 +35,7 @@ public class PuzzleButton : Button
                 title.text = puzzle.puzzleName;
                 image.sprite = puzzle.image;
                 image.preserveAspect = true;
+                image.enabled = true;
             }
         }
     }

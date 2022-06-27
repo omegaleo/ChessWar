@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b18e9a28e36460c918f8e5dddfa1227, type: 3}
+  m_Name: Puzzle1
+  m_EditorClassIdentifier: 
+  image: {fileID: 21300000, guid: bbda9c585217a4247932e6b40b671e8a, type: 3}
+  puzzleName: Puzzle 1-1
+  whitePieces:
+  - x: 7
+    y: 2
+    pieceType: K
+    startLevel: 0
+  - x: 0
+    y: 2
+    pieceType: B
+    startLevel: 5
+  - x: 5
+    y: 1
+    pieceType: R
+    startLevel: 4
+  - x: 6
+    y: 2
+    pieceType: P
+    startLevel: 1
+  - x: 6
+    y: 3
+    pieceType: KN
+    startLevel: 8
+  - x: 7
+    y: 3
+    pieceType: P
+    startLevel: 1
+  blackPieces:
+  - x: 7
+    y: 4
+    pieceType: K
+    startLevel: 0
+  - x: 2
+    y: 1
+    pieceType: B
+    startLevel: 6
+  - x: 3
+    y: 1
+    pieceType: R
+    startLevel: 4
+  - x: 3
+    y: 3
+    pieceType: R
+    startLevel: 5
+  - x: 6
+    y: 5
+    pieceType: P
+    startLevel: 3
+  playerStartColor: {r: 1, g: 1, b: 1, a: 1}

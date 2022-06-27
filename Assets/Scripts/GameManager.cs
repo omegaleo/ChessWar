@@ -51,6 +51,14 @@ public class GameManager : InstancedBehaviour<GameManager>
         StartCoroutine(AwaitForGameStart());
     }
 
+    public void StartPuzzle(Puzzle puzzle)
+    {
+        this.botGame = true;
+
+        SceneManager.LoadScene(1);
+        StartCoroutine(AwaitForPuzzleStart(puzzle));
+    }
+
     IEnumerator AwaitForGameStart()
     {
         while (PieceManager.instance == null)
@@ -58,5 +66,14 @@ public class GameManager : InstancedBehaviour<GameManager>
             yield return new WaitForSeconds(0.1f);
         }
         PieceManager.instance.Setup();
+    }
+    
+    IEnumerator AwaitForPuzzleStart(Puzzle puzzle)
+    {
+        while (PieceManager.instance == null)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+        PieceManager.instance.SetupPuzzle(puzzle);
     }
 }

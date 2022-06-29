@@ -174,6 +174,11 @@ public class BasePiece : EventTrigger
                             isChecking = true;
                             CurrentCell.outlineImage.enabled = true;
                         }
+                        else
+                        {
+                            isChecking = false;
+                            CurrentCell.outlineImage.enabled = false;
+                        }
 
                         break;
                     }
@@ -253,7 +258,7 @@ public class BasePiece : EventTrigger
 
         if (PieceManager.instance.GetKing(color).IsChecked() && this.GetType() != typeof(King))
         {
-            var checkingCells = PieceManager.instance.GetCheckingCells(color);
+            var checkingCells = PieceManager.instance.GetCheckingCells(color).ToList();
             highlightedCells = highlightedCells.Where(x => checkingCells.Contains(x)).ToList();
         }
     }
@@ -355,7 +360,13 @@ public class BasePiece : EventTrigger
         });
 
         PieceManager.instance.CheckGameOver(color);
-        
+
+        StartCoroutine(WaitToChangeSides());
+    }
+
+    IEnumerator WaitToChangeSides()
+    {
+        yield return new WaitForSeconds(1f);
         if (!moveTwice || move > 1)
         {
             move = 0;

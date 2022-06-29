@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : InstancedBehaviour<GameManager>
 {
     public bool botGame;
+    public bool puzzleMode;
 
     [SerializeField] private Texture2D cursorTexture;
 
@@ -46,7 +47,7 @@ public class GameManager : InstancedBehaviour<GameManager>
     public void StartGame(bool botGame)
     {
         this.botGame = botGame;
-
+        puzzleMode = false;
         SceneManager.LoadScene(1);
         StartCoroutine(AwaitForGameStart());
     }
@@ -54,7 +55,7 @@ public class GameManager : InstancedBehaviour<GameManager>
     public void StartPuzzle(Puzzle puzzle)
     {
         this.botGame = true;
-
+        puzzleMode = true;
         SceneManager.LoadScene(1);
         StartCoroutine(AwaitForPuzzleStart(puzzle));
     }

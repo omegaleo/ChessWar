@@ -361,6 +361,14 @@ public class PieceManager : InstancedBehaviour<PieceManager>
     {
         Cell kingCell = king.CurrentCell;
 
+        if (checkingPieceCell.currentPiece.GetType() == typeof(Knight))
+        {
+            var cells = checkingPieceCell.currentPiece.highlightedCells;
+            cells.Add(checkingPieceCell);
+            
+            return cells;
+        }
+        
         var xPos = checkingPieceCell.boardPosition.x;
         var yPos = checkingPieceCell.boardPosition.y;
         

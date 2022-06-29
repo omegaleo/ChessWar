@@ -80,14 +80,20 @@ public class Knight : BasePiece
             {
                 var cell = Board.instance.allCells[targetX, targetY];
 
-                if (IsValidMovement(cell.currentPiece))
+                if (cell.currentPiece.level <= this.level)
                 {
                     highlightedCells.Add(Board.instance.allCells [targetX, targetY]);
-                    if (ValidChecking(cell.currentPiece))
-                    {
-                        isChecking = true;
-                        CurrentCell.outlineImage.enabled = true;
-                    }
+                }
+                
+                if (ValidChecking(cell.currentPiece))
+                {
+                    isChecking = true;
+                    CurrentCell.outlineImage.enabled = true;
+                }
+                else
+                {
+                    isChecking = false;
+                    CurrentCell.outlineImage.enabled = false;
                 }
             }
             else

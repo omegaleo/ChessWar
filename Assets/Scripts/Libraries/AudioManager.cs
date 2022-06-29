@@ -36,8 +36,15 @@ public class AudioManager<T>:InstancedBehaviour<T> where T:AudioManager<T>
     
     public void SetVolume(float volume)
     {
+        if (volume < -9.5f)
+        {
+            Mute();
+            return;
+        }
+        
         GetMixer().SetFloat(PlayerPrefTag(), volume);
         PlayerPrefs.SetFloat(PlayerPrefTag(), volume);
+        PlayerPrefs.Save();
     }
 
     public void Mute()

@@ -76,17 +76,29 @@ public class Knight : BasePiece
         }
         else if (state != CellState.OutOfBounds)
         {
-            highlightedCells.Add(Board.instance.allCells [targetX, targetY]);
-
             if (state == CellState.Enemy)
             {
                 var cell = Board.instance.allCells[targetX, targetY];
 
+                if (cell.currentPiece.level <= this.level)
+                {
+                    highlightedCells.Add(Board.instance.allCells [targetX, targetY]);
+                }
+                
                 if (ValidChecking(cell.currentPiece))
                 {
                     isChecking = true;
                     CurrentCell.outlineImage.enabled = true;
                 }
+                else
+                {
+                    isChecking = false;
+                    CurrentCell.outlineImage.enabled = false;
+                }
+            }
+            else
+            {
+                highlightedCells.Add(Board.instance.allCells [targetX, targetY]);
             }
         }
     }

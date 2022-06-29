@@ -35,6 +35,7 @@ public class BasePiece : EventTrigger
     public bool isChecking = false;
     public bool moveTwice = false;
     public int move = 0;
+    public bool isFirstMove = true;
 
     public enum AnimationType
     {
@@ -48,6 +49,8 @@ public class BasePiece : EventTrigger
     private Animator animator;
     private Animator overlayAnimator;
     private Image animatorImage;
+
+    public bool movementEnabled;
 
     public virtual void Setup(Color newColor, PieceSprite sprites)
     {
@@ -148,7 +151,7 @@ public class BasePiece : EventTrigger
             CellState state = CellState.None;
             state = Board.instance.ValidateCell(currentX, currentY, this);
 
-            if (state == CellState.Enemy || state == CellState.Free || state == CellState.Friendly)
+            if (state != CellState.OutOfBounds)
             {
                 var possibleTarget = Board.instance.allCells[currentX, currentY];
 
@@ -171,6 +174,11 @@ public class BasePiece : EventTrigger
                             isChecking = true;
                             CurrentCell.outlineImage.enabled = true;
                         }
+                        else
+                        {
+                            isChecking = false;
+                            CurrentCell.outlineImage.enabled = false;
+                        }
 
                         break;
                     }
@@ -189,7 +197,7 @@ public class BasePiece : EventTrigger
 
     public bool ValidChecking(BasePiece piece)
     {
-        return piece.GetType() == typeof(King) && piece.color != color && this.GetType() != typeof(King) && this.GetType() != typeof(Pawn);
+        return piece.GetType() == typeof(King) && piece.color != color && this.GetType() != typeof(King);
     }
 
     public void CreateCellPath(int xDir, int yDir, int movement)
@@ -215,15 +223,18 @@ public class BasePiece : EventTrigger
 
     public virtual void CheckPathing()
     {
+        highlightedCells.Clear();
+        
+        Board.instance.ResetCellOutlines();
+        
         if (PieceManager.instance.EvolvedQueenSecondMove(color) && (GetType() != typeof(Queen) || !evolved))
         {
             return;
         }
-        
+
         isChecking = false;
         CurrentCell.outlineImage.enabled = false;
-        highlightedCells.Clear();
-        
+
         if (!IsAlive())
         {
             return;
@@ -247,7 +258,7 @@ public class BasePiece : EventTrigger
 
         if (PieceManager.instance.GetKing(color).IsChecked() && this.GetType() != typeof(King))
         {
-            var checkingCells = PieceManager.instance.GetCheckingCells(color);
+            var checkingCells = PieceManager.instance.GetCheckingCells(color).ToList();
             highlightedCells = highlightedCells.Where(x => checkingCells.Contains(x)).ToList();
         }
     }
@@ -347,11 +358,23 @@ public class BasePiece : EventTrigger
         {
             x.outlineImage.enabled = false;
         });
-        
+
+        PieceManager.instance.CheckGameOver(color);
+
+        StartCoroutine(WaitToChangeSides());
+    }
+
+    IEnumerator WaitToChangeSides()
+    {
+        yield return new WaitForSeconds(1f);
         if (!moveTwice || move > 1)
         {
             move = 0;
             PieceManager.instance.SwitchSides(color);
+        }
+        else if (GameManager.instance.botGame && moveTwice && color == PieceManager.instance.player2Color)
+        {
+            BotAI.Move(color);
         }
     }
 
@@ -388,6 +411,11 @@ public class BasePiece : EventTrigger
     {
         base.OnBeginDrag(eventData);
         
+        if (!movementEnabled)
+        {
+            return;
+        }
+        
         CheckPathing();
         
         ShowCells();
@@ -398,6 +426,11 @@ public class BasePiece : EventTrigger
     
     public override void OnDrag(PointerEventData eventData)
     {
+        if (color != PieceManager.instance.currentColor)
+        {
+            return;
+        }
+        
         base.OnDrag(eventData);
         
         var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);

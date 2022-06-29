@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class King : BasePiece
 {
-    private bool isFirstMove;
-
     private Rook leftRook, rightRook;
 
     public King()
@@ -51,7 +49,7 @@ public class King : BasePiece
 
     public override bool IsValidMovement(BasePiece piece)
     {
-        return piece == null;
+        return piece.GetType() != typeof(King) && piece.color != color;
     }
 
     public bool IsChecked()
@@ -205,7 +203,7 @@ public class King : BasePiece
 
                 if (rook != null)
                 {
-                    if (rook.color != color || !rook.firstMove)
+                    if (rook.color != color || !rook.isFirstMove)
                     {
                         return null;
                     }

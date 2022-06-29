@@ -19,6 +19,7 @@ public class PieceManager : InstancedBehaviour<PieceManager>
 
     public Color player1Color = Color.white;
     public Color player2Color = Color.black;
+    public Color currentColor;
     
     private string[] pieceOrder = new string[16]
     {
@@ -59,7 +60,7 @@ public class PieceManager : InstancedBehaviour<PieceManager>
         new PieceSprite() {pieceIdentifier = "K"},
         new PieceSprite() {pieceIdentifier = "Q"},
     };
-    
+
     public void Setup()
     {
         player1Color = new List<Color>() {Color.white, Color.black}.Random();
@@ -71,6 +72,50 @@ public class PieceManager : InstancedBehaviour<PieceManager>
         PlacePieces(1, 0, (player1Color == Color.white)? whitePieces : blackPieces);
         PlacePieces(6, 7, (player1Color != Color.white)? whitePieces : blackPieces);
 
+        SwitchSides(Color.black);
+    }
+
+    public void SetupPuzzle(Puzzle puzzle)
+    {
+        player1Color = puzzle.playerStartColor;
+        player2Color = (player1Color == Color.white) ? Color.black : Color.white;
+
+        foreach (var piece in puzzle.blackPieces)
+        {
+            var blackPiece = CreatePiece(Color.black, piece.pieceType);
+            blackPiece.Place(Board.instance.allCells[piece.x, piece.y]);
+
+            blackPiece.level = piece.startLevel;
+            blackPiece.CheckEvolved();
+
+            blackPiece.isFirstMove = piece.firstMove;
+            
+            if (blackPiece.GetType() == typeof(King))
+            {
+                kings.Add(blackPiece);
+            }
+            
+            blackPieces.Add(blackPiece);
+        }
+        
+        foreach (var piece in puzzle.whitePieces)
+        {
+            var whitePiece = CreatePiece(Color.white, piece.pieceType);
+            whitePiece.Place(Board.instance.allCells[piece.x, piece.y]);
+
+            whitePiece.level = piece.startLevel;
+            whitePiece.CheckEvolved();
+            
+            whitePiece.isFirstMove = piece.firstMove;
+            
+            if (whitePiece.GetType() == typeof(King))
+            {
+                kings.Add(whitePiece);
+            }
+            
+            whitePieces.Add(whitePiece);
+        }
+        
         SwitchSides(Color.black);
     }
 
@@ -114,7 +159,7 @@ public class PieceManager : InstancedBehaviour<PieceManager>
     {
         return (King)kings.FirstOrDefault(x =>  x.color == teamColor);
     }
-    
+
     private void PlacePieces(int pawnRow, int royaltyRow, List<BasePiece> pieces)
     {
         for (int i = 0; i < 8; i++)
@@ -128,7 +173,7 @@ public class PieceManager : InstancedBehaviour<PieceManager>
     {
         foreach (BasePiece piece in pieces)
         {
-            piece.enabled = value;
+            piece.movementEnabled = value;
         }
     }
 
@@ -136,8 +181,7 @@ public class PieceManager : InstancedBehaviour<PieceManager>
     {
         King blackKing = GetKing(Color.black);
         King whiteKing = GetKing(Color.white);
-        bool gameOver = false;
-        
+
         Board.instance.ClearSelectedCells();
         
         // Check if Kings are checked and evolved to check if they can switch with a Rook
@@ -151,36 +195,14 @@ public class PieceManager : InstancedBehaviour<PieceManager>
             whiteKing.TrySwitchRook();
         }
         
-        // Check if CheckMate
-        if (blackKing.IsCheckMate())
-        {
-            gameOver = true;
-            if (player1Color == Color.black)
-            {
-                CheckmateScreen.instance.Open((GameManager.instance.botGame)? "DEFEAT":"WHITE WINS");
-            }
-            else
-            {
-                CheckmateScreen.instance.Open((GameManager.instance.botGame)? "VICTORY":"WHITE WINS");
-            }
-        }
-        else if (whiteKing.IsCheckMate())
-        {
-            gameOver = true;
-            if (player1Color == Color.white)
-            {
-                CheckmateScreen.instance.Open((GameManager.instance.botGame)? "DEFEAT":"BLACK WINS");
-            }
-            else
-            {
-                CheckmateScreen.instance.Open((GameManager.instance.botGame)? "VICTORY":"BLACK WINS");
-            }
-        }
-
+        bool gameOver = CheckGameOver(color);
+        
         if (!gameOver)
         {
             bool isBlackTurn = color == Color.white;
-        
+
+            currentColor = (isBlackTurn) ? Color.black : Color.white;
+            
             SetInteractive(whitePieces, !isBlackTurn);
             SetInteractive(blackPieces, isBlackTurn);
 
@@ -192,11 +214,47 @@ public class PieceManager : InstancedBehaviour<PieceManager>
                 piece.enabled = isPartOfTeam;
             }
 
-            if (((isBlackTurn && player2Color == Color.black) || (!isBlackTurn && player2Color == Color.white)) && GameManager.instance.botGame)
+            if (((isBlackTurn && player2Color == Color.black) || (!isBlackTurn && player2Color == Color.white)) &&
+                GameManager.instance.botGame)
             {
                 BotAI.Move(player2Color);
             }
         }
+    }
+
+    public bool CheckGameOver(Color color)
+    {
+        bool gameOver = false;
+        King blackKing = GetKing(Color.black);
+        King whiteKing = GetKing(Color.white);
+        
+        // Check if CheckMate
+        if (blackKing.IsCheckMate())
+        {
+            gameOver = true;
+            if (player1Color == Color.black)
+            {
+                CheckmateScreen.instance.Open((GameManager.instance.botGame) ? "DEFEAT" : "WHITE WINS");
+            }
+            else
+            {
+                CheckmateScreen.instance.Open((GameManager.instance.botGame) ? "VICTORY" : "WHITE WINS");
+            }
+        }
+        else if (whiteKing.IsCheckMate())
+        {
+            gameOver = true;
+            if (player1Color == Color.white)
+            {
+                CheckmateScreen.instance.Open((GameManager.instance.botGame) ? "DEFEAT" : "BLACK WINS");
+            }
+            else
+            {
+                CheckmateScreen.instance.Open((GameManager.instance.botGame) ? "VICTORY" : "BLACK WINS");
+            }
+        }
+
+        return gameOver;
     }
 
     public void ResetGame()
@@ -298,11 +356,19 @@ public class PieceManager : InstancedBehaviour<PieceManager>
         
         return cells;
     }
-    
+
     public List<Cell> CheckingCellPath(Cell checkingPieceCell, King king)
     {
         Cell kingCell = king.CurrentCell;
 
+        if (checkingPieceCell.currentPiece.GetType() == typeof(Knight))
+        {
+            var cells = checkingPieceCell.currentPiece.highlightedCells;
+            cells.Add(checkingPieceCell);
+            
+            return cells;
+        }
+        
         var xPos = checkingPieceCell.boardPosition.x;
         var yPos = checkingPieceCell.boardPosition.y;
         
@@ -321,7 +387,7 @@ public class PieceManager : InstancedBehaviour<PieceManager>
             ? whitePieces.Where(x => x.isChecking && x.IsAlive()).SelectMany(x => CheckingCellPath(x.CurrentCell, GetKing(Color.black)))
             : blackPieces.Where(x => x.isChecking && x.IsAlive()).SelectMany(x => CheckingCellPath(x.CurrentCell, GetKing(Color.white)));
     }
-    
+
     public bool CanCheckmateBePrevented(Color teamColor)
     {
         var checkingCells = GetCheckingCells(teamColor);
@@ -360,7 +426,7 @@ public class PieceManager : InstancedBehaviour<PieceManager>
 
         return movements;
     }
-    
+
     /// <summary>
     /// Get a list of all possible movement that an opposing piece might do
     /// </summary>
@@ -382,6 +448,8 @@ public class PieceManager : InstancedBehaviour<PieceManager>
     public void CheckIfKingCanEvolve(Color teamColor)
     {
         King king = GetKing(teamColor);
+
+        if (king == null) return;
         
         if (king.evolved) return; // Skip if the king is already evolved
 
@@ -418,7 +486,7 @@ public class PieceManager : InstancedBehaviour<PieceManager>
     public bool EvolvedQueenSecondMove(Color teamColor)
     {
         return (teamColor == Color.black)
-            ? blackPieces.Any(x => x.GetType() == typeof(Queen) && x.evolved && x.move < 2)
-            : whitePieces.Any(x => x.GetType() == typeof(Queen) && x.evolved && x.move < 2);
+            ? blackPieces.Any(x => x.GetType() == typeof(Queen) && x.evolved && x.move == 1)
+            : whitePieces.Any(x => x.GetType() == typeof(Queen) && x.evolved && x.move == 1);
     }
 }

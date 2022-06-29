@@ -6,8 +6,6 @@ public class Rook : BasePiece
     public Cell castleTriggerCell;
     public Cell castleCell;
 
-    public bool firstMove;
-    
     public Rook()
     {
         level = 4;
@@ -15,7 +13,7 @@ public class Rook : BasePiece
         evolveLevel = 6;
 
         movement = new(7, 7, 0);
-        firstMove = true;
+        isFirstMove = true;
     }
 
     public override void Evolve()
@@ -28,13 +26,13 @@ public class Rook : BasePiece
     public override void Reset()
     {
         base.Reset();
-        firstMove = true;
+        isFirstMove = true;
     }
 
     public override void Move()
     {
         base.Move();
-        firstMove = false;
+        isFirstMove = false;
     }
 
     public override void Place(Cell newCell)

@@ -41,6 +41,8 @@ public class Knight : BasePiece
         CreateCellPath(1);
         
         CreateCellPath(-1);
+
+        CheckedFilter();
     }
 
     public override string GetDescription()

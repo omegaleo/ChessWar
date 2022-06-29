@@ -29,7 +29,7 @@ public class Rook : BasePiece
         isFirstMove = true;
     }
 
-    public override void Move()
+    internal override void Move()
     {
         base.Move();
         isFirstMove = false;

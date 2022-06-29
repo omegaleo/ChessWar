@@ -361,24 +361,72 @@ public class PieceManager : InstancedBehaviour<PieceManager>
     {
         Cell kingCell = king.CurrentCell;
 
-        if (checkingPieceCell.currentPiece.GetType() == typeof(Knight))
+        var checkingPiece = checkingPieceCell.currentPiece;
+        
+        if (checkingPiece.GetType() == typeof(Knight) || checkingPiece.GetType() == typeof(Pawn))
         {
-            var cells = checkingPieceCell.currentPiece.highlightedCells;
-            cells.Add(checkingPieceCell);
-            
-            return cells;
+            return new List<Cell>()
+            {
+                checkingPieceCell,
+                king.CurrentCell
+            };
         }
+        else
+        {
+            List<Cell> cells = new List<Cell>();
+            
+            var xPos = checkingPieceCell.boardPosition.x;
+            var yPos = checkingPieceCell.boardPosition.y;
         
-        var xPos = checkingPieceCell.boardPosition.x;
-        var yPos = checkingPieceCell.boardPosition.y;
-        
-        int xDiff = kingCell.boardPosition.x - xPos;
-        int yDiff = kingCell.boardPosition.y - yPos;
+            int xDiff = kingCell.boardPosition.x - xPos;
+            int yDiff = kingCell.boardPosition.y - yPos;
 
-        return IterateCells(xPos, yPos,
-            (xDiff > 0) ? 1 : ((xDiff < 0) ? -1 : 0),
-            (yDiff > 0) ? 1 : ((yDiff < 0) ? -1 : 0),
-            (xDiff != 0) ? xDiff : yDiff);
+            int yIncrement = 1;
+            int xIncrement = 1;
+
+            if (yDiff < 0)
+            {
+                yIncrement = -1;
+            }
+            
+            if (xDiff < 0)
+            {
+                yIncrement = -1;
+            }
+
+            if (xDiff != 0 && yDiff != 0)
+            {
+                // Diagonal
+                for (int y = yPos; y != kingCell.boardPosition.y; y += (yIncrement))
+                {
+                    for (int x = xPos; x != kingCell.boardPosition.x; x += (xIncrement))
+                    {
+                        var cell = Board.instance.allCells[x, y];
+                        cells.Add(cell);
+                    }
+                }
+            }
+            else if (xDiff != 0)
+            {
+                // Horizontal
+                for (int x = xPos; x != kingCell.boardPosition.x; x += (xIncrement))
+                {
+                    var cell = Board.instance.allCells[x, yPos];
+                    cells.Add(cell);
+                }
+            }
+            else if (yDiff != 0)
+            {
+                // Vertical
+                for (int y = yPos; y != kingCell.boardPosition.y; y += (yIncrement))
+                {
+                    var cell = Board.instance.allCells[xPos, y];
+                    cells.Add(cell);
+                }
+            }
+        }
+
+        return new List<Cell>();
     }
 
     public IEnumerable<Cell> GetCheckingCells(Color color)

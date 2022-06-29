@@ -256,6 +256,11 @@ public class BasePiece : EventTrigger
         CreateCellPath(1, -1, movement.z);
         CreateCellPath(-1, -1, movement.z);
 
+        CheckedFilter();
+    }
+
+    internal void CheckedFilter()
+    {
         if (PieceManager.instance.GetKing(color).IsChecked() && this.GetType() != typeof(King))
         {
             var checkingCells = PieceManager.instance.GetCheckingCells(color).ToList();
@@ -279,7 +284,7 @@ public class BasePiece : EventTrigger
         }
     }
 
-    public virtual void Move()
+    internal virtual void Move()
     {
         bool isSecondaryPlayer = color == PieceManager.instance.player2Color;
         if (targetCell.currentPiece != null)

@@ -78,7 +78,7 @@ public class King : BasePiece
         rightRook = null;
     }
 
-    public override void Move()
+    internal override void Move()
     {
         CurrentCell.checkedImage.enabled = false;
         base.Move();
